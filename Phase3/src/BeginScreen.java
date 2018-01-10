@@ -19,6 +19,7 @@ public class BeginScreen extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //initiate all the nodes, and add them to an array called myList
         ArrayList<Object> myList = new ArrayList<>();
         Label parcelA = new Label("Parcel A");
         myList.add(parcelA);
@@ -54,16 +55,12 @@ public class BeginScreen extends Application {
         myList.add(valueC);
 
         Button startbutton = new Button("Start program with theese parameters!");
-        startbutton.setMinHeight(primaryStage.getHeight()/2);
-        startbutton.setMinWidth(primaryStage.getWidth());
 
-
-
+        //Add all the nodes (except the button) to a GridPane called layout1
         GridPane layout1 = new GridPane();
         layout1.setHgap(10);
         layout1.setVgap(10);
         int index = 0;
-
         for (int i = 0; i<3;i++){
             for (int j = 0; j<5;j++){
                 layout1.add((javafx.scene.Node)myList.get(index),i,j);
@@ -71,9 +68,11 @@ public class BeginScreen extends Application {
             }
         }
 
+        //Add layout1 and startbutton to a new boxlayout
         VBox boxl = new VBox();
         boxl.getChildren().addAll(layout1,startbutton);
 
+        //setup scene with thet correct layout, set the stage to that scene
         Scene scene1 = new Scene(boxl,300,300);
         primaryStage.setScene(scene1);
         primaryStage.show();
