@@ -8,7 +8,7 @@ public class KnapsackProblem{
   private static int z;
   private static int b;
   private static final int WEIGHT = 7;
-  private static final int ITEMS = 4;
+  private static final int ITEM = 4;
   private static final int[][] ITEMS = {{1, x}, {3, y}, {4, z}, {5, b}};
   private static int weightSum = 0;
   private static int valueSum = 0;
@@ -28,10 +28,10 @@ public class KnapsackProblem{
     for(int i = 1; i<(WEIGHT+2); i++){
       table[0][i] = i-1; //weights for reference on the first row
     }
-    for(int i = 1; i<(ITEMS+1); i++){
+    for(int i = 1; i<(ITEM+1); i++){
       table[i][0] = ITEMS[i-1][0]; //set first colum with weights of different items
     }
-    for(int i = 1; i<(ITEMS+1); i++){
+    for(int i = 1; i<(ITEM+1); i++){
       for(int j = 1; j<(WEIGHT+2); j++){
           if((i == 1) && (table[0][j] == 0)){
             table[i][j] = 0; //set to zero when weight limit is 0
@@ -47,28 +47,28 @@ public class KnapsackProblem{
           }
       }
    }
-   for(int i = 1; i<(ITEMS+1); i++){ //print the table with the results
+   for(int i = 1; i<(ITEM+1); i++){ //print the table with the results
      for(int j = 1; j<(WEIGHT+2); j++){
         System.out.print(table[i][j]);
      }
      System.out.println();
    }
 
-     if(table[ITEMS][WEIGHT + 1] == table[ITEMS-1][WEIGHT + 1]){ //if last value on table is equal to the one above it.
-       if(table[ITEMS-1][WEIGHT + 1] != table[ITEMS-2][WEIGHT + 1]){ //if the value that was above the one before is not equal to the one above it, then that item on that row is picked.
-         weightSum += table[ITEMS-1][0]; //weight is added to weightSum
-         valueSum += valueOf(table[ITEMS-1][0]); //value is added to valueSum
-         if(table[ITEMS-2][WEIGHT + 1 - (table[ITEMS-1][0])] != (table[ITEMS-3][WEIGHT]) + 1 - (table[ITEMS-1][0]])){ //if value one position above and table[ITEMS-1][0] positions left is not equal to the one above it
-           weightSum += table[ITEMS-2][0]; //weight is added to weightSum
-           valueSum += valueOf(table[ITEMS-2][0]); //value is added to valueSum
-           if(table[ITEMS-3][WEIGHT + 1 - (table[ITEMS-1][0]) - (table[ITEMS-2][0])] == 0){ //if value one position above and table[ITEMS-1][0] positions to the left is = 0.
+     if(table[ITEM][WEIGHT + 1] == table[ITEM-1][WEIGHT + 1]){ //if last value on table is equal to the one above it.
+       if(table[ITEM-1][WEIGHT + 1] != table[ITEM-2][WEIGHT + 1]){ //if the value that was above the one before is not equal to the one above it, then that item on that row is picked.
+         weightSum += table[ITEM-1][0]; //weight is added to weightSum
+         valueSum += valueOf(table[ITEM-1][0]); //value is added to valueSum
+         if(table[ITEM-2][WEIGHT + 1 - (table[ITEM-1][0])] != (table[ITEM-3][WEIGHT]) + 1 - (table[ITEM-1][0]])){ //if value one position above and table[ITEMS-1][0] positions left is not equal to the one above it
+           weightSum += table[ITEM-2][0]; //weight is added to weightSum
+           valueSum += valueOf(table[ITEM-2][0]); //value is added to valueSum
+           if(table[ITEM-3][WEIGHT + 1 - (table[ITEM-1][0]) - (table[ITEM-2][0])] == 0){ //if value one position above and table[ITEMS-1][0] positions to the left is = 0.
              System.out.println("Done!");
            }
          }
        }
      }else{
-        weightSum += table[ITEMS][0]; //start making the sum of weights of chosen items
-        valueSum += valueOf(table[ITEMS][0]); //start making the sum of values of chosen items
+        weightSum += table[ITEM][0]; //start making the sum of weights of chosen items
+        valueSum += valueOf(table[ITEM][0]); //start making the sum of values of chosen items
      }
 
      /*
