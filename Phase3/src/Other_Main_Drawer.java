@@ -1,9 +1,13 @@
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Cylinder;
+import javafx.scene.shape.Line;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -11,7 +15,11 @@ public class Other_Main_Drawer extends Application {
 
     private static final double SCENE_SIZE = 300;
     private static final double BOX_EDGE_LENGTH = 100;
-    private static final double SIZE_TRANSFORMATION = 1;
+    private static final double SIZE_TRANSFORMATION = 0.5;
+
+    private static final double CONTAINERW = 500;
+    private static final double CONTAINERH = 400;
+    private static final double CONTAINERD = 500;
 
     private static final Color BOX_COLOR     = Color.rgb(250, 0, 150,0.9);
     private static PhongMaterial boxMat = createMaterial();
@@ -20,11 +28,7 @@ public class Other_Main_Drawer extends Application {
 
     private PerspectiveCamera camera = new PerspectiveCamera();
 
-    private Group myGroup = new Group(  new AmbientLight(AMBIENT_COLOR),
-                            createPointLight(),
-                            createBox(200,100,RotateTransition.INDEFINITE),
-                            createBox(350,200,1)
-    );
+    private Group myGroup = new Group(  new AmbientLight(AMBIENT_COLOR), createPointLight());
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -36,9 +40,15 @@ public class Other_Main_Drawer extends Application {
         );
         scene.setFill(Color.MIDNIGHTBLUE.darker().darker());
 
-        camera.setTranslateY(-100);
+        camera.setTranslateX(-300);
+        camera.setTranslateY(-300);
         scene.setCamera(camera);
-        addBox(100,300,200,400,300,300);
+
+        addBox(100,300,100,0,0,0);
+        //addBox(200,200,200,400,300,100);
+
+        createContainerLines(CONTAINERW,CONTAINERH,CONTAINERD);
+
 
         stage.setScene(scene);
         stage.show();
@@ -53,17 +63,12 @@ public class Other_Main_Drawer extends Application {
         return light;
     }
 
-    private Box createBox(double x, double y, double rotateCount) {
-        final Box box = new Box(BOX_EDGE_LENGTH, BOX_EDGE_LENGTH, BOX_EDGE_LENGTH);
-        box.setTranslateX(x);
-        box.setTranslateY(y);
-        box.setTranslateZ(BOX_EDGE_LENGTH / 2d);
-        box.setMaterial(boxMat);
-        return box;
-    }
-
     public void addBox(double w, double h, double d, double x, double y,double z){
         //Adjusting size and location to what's handy, default value of size transformation is 1.
+        x+=(w/2);
+        z+=(d/2);
+        y+=(h/2);
+
         w *= SIZE_TRANSFORMATION;
         h *= SIZE_TRANSFORMATION;
         d *= SIZE_TRANSFORMATION;
@@ -78,9 +83,57 @@ public class Other_Main_Drawer extends Application {
 
         newB.setMaterial(boxMat);
 
-
         myGroup.getChildren().add(newB);
 
+    }
+
+    public void createContainerLines (double contW,double contH,double contD){
+        contW*=SIZE_TRANSFORMATION;
+        contH*=SIZE_TRANSFORMATION;
+        contD*=SIZE_TRANSFORMATION;
+
+        Point3D p1 = new Point3D(0,0,0);
+        Point3D p2 = new Point3D(contW,0,0);
+        Point3D p3 = new Point3D(0,contH,0);
+        Point3D p4 = new Point3D(contW,contH,0);
+        createLine(p1,p2);
+        createLine(p1,p3);
+        createLine(p3,p4);
+        createLine(p2,p4);
+
+        Point3D p5 = new Point3D(0,0,contD);
+        Point3D p6 = new Point3D(contW,0,contD);
+        Point3D p7 = new Point3D(0,contH,contD);
+        Point3D p8 = new Point3D(contW,contH,contD);
+        createLine(p5,p6);
+        createLine(p5,p7);
+        createLine(p7,p8);
+        createLine(p6,p8);
+
+        createLine(p1,p5);
+        createLine(p2,p6);
+        createLine(p3,p7);
+        createLine(p4,p8);
+    }
+
+
+    public void createLine (Point3D origin, Point3D target) {
+        Point3D yAxis = new Point3D(0, 1, 0);
+        Point3D diff = target.subtract(origin);
+        double height = diff.magnitude();
+
+        Point3D mid = target.midpoint(origin);
+        Translate moveToMidpoint = new Translate(mid.getX(), mid.getY(), mid.getZ());
+
+        Point3D axisOfRotation = diff.crossProduct(yAxis);
+        double angle = Math.acos(diff.normalize().dotProduct(yAxis));
+        Rotate rotateAroundCenter = new Rotate(-Math.toDegrees(angle), axisOfRotation);
+
+        Cylinder line = new Cylinder(1, height);
+
+        line.getTransforms().addAll(moveToMidpoint, rotateAroundCenter);
+
+        myGroup.getChildren().add(line);
     }
 
 //    private void rotateAroundYAxis(Box box, double rotateCount) {
