@@ -5,50 +5,90 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class MainPanel extends JPanel {
-    private ArrayList<Triangle> tris;
-    private ArrayList<Rectangle> rectangles;
+    private ArrayList<Triangle> triangles;
     private UserInterface ui;
 
     public MainPanel(UserInterface ui) {
-        tris = new ArrayList<>();
-        rectangles = new ArrayList<>();
+        triangles = new ArrayList<>();
         this.ui = ui;
 
-        addRectangles(new Rectangle(new Vertex(100, 100, 100),
-                 new Vertex(-100, 100, 100),
-                 new Vertex(-100, -100, 100),
-                 new Vertex(100, -100, 100),
-                 Color.WHITE));
-        addRectangles(new Rectangle(new Vertex(100, 100, 100),
-                new Vertex(100, 100,-100),
-                new Vertex(100, -100,-100),
-                new Vertex(100, -100, 100),
-                Color.RED));
-        addRectangles(new Rectangle(new Vertex(-100, -100, 100),
-                new Vertex(-100, -100, -100),
-                new Vertex(100, -100, -100),
-                new Vertex(100, -100, 100),
-                Color.GREEN));
-        addRectangles(new Rectangle(new Vertex(-100, -100, -100),
-                new Vertex(-100, 100, -100),
-                new Vertex(100, 100, -100),
-                new Vertex(100, -100, -100),
-                Color.BLUE));
-        addRectangles(new Rectangle(new Vertex(-100, 100, 100),
-                new Vertex(-100, -100, 100),
-                new Vertex(-100, -100, -100),
-                new Vertex(-100, 100, -100),
+        //A
+        addTriangle(new Triangle(new Vertex(-100, 100, 100, 1),
+                new Vertex(100, 100, 100, 1),
+                new Vertex(-100, 100, -100, 1),
                 Color.YELLOW));
-        addRectangles(new Rectangle(new Vertex(-100, 100, 100),
-                new Vertex(-100, 100, -100),
-                new Vertex(100, 100, -100),
-                new Vertex(100, 100, 100),
+        //B
+        addTriangle(new Triangle(new Vertex(100, 100, 100, 1),
+                new Vertex(100, 100, -100, 1),
+                new Vertex(-100, 100, -100, 1),
+                Color.YELLOW));
+        //C
+        addTriangle(new Triangle(new Vertex(100, -100, 100, 1),
+                new Vertex(100, 100, -100, 1),
+                new Vertex(100, 100, 100, 1),
+                Color.GREEN));
+        //D
+        addTriangle(new Triangle(new Vertex(100, -100, 100, 1),
+                new Vertex(100, -100, -100, 1),
+                new Vertex(100, 100, -100, 1),
+                Color.GREEN));
+        //E
+        addTriangle(new Triangle(new Vertex(-100, -100, 100, 1),
+                new Vertex(100, -100, 100, 1),
+                new Vertex(-100, 100, 100, 1),
+                Color.RED));
+
+        //F
+        addTriangle(new Triangle(new Vertex(100, -100, 100, 1),
+                new Vertex(100, 100, 100, 1),
+                new Vertex(-100, 100, 100, 1),
+                Color.RED));
+        //G
+        addTriangle(new Triangle(new Vertex(-100, -100, 100, 1),
+                new Vertex(-100, 100, 100, 1),
+                new Vertex(-100, -100, -100, 1),
                 Color.PINK));
+        //H
+        addTriangle(new Triangle(new Vertex(-100, 100, 100, 1),
+                new Vertex(-100, 100, -100, 1),
+                new Vertex(-100, -100, -100, 1),
+                Color.PINK));
+        //I
+        addTriangle(new Triangle(new Vertex(-100, 100, -100, 1),
+                new Vertex(100, 100, -100, 1),
+                new Vertex(-100, -100, -100, 1),
+                Color.BLUE));
+        //J
+        addTriangle(new Triangle(new Vertex(-100, -100, -100, 1),
+                new Vertex(100, 100, -100, 1),
+                new Vertex(100, -100, -100, 1),
+                Color.BLUE));
+        //K
+        addTriangle(new Triangle(new Vertex(100, -100, 100, 1),
+                new Vertex(-100, -100, 100, 1),
+                new Vertex(-100, -100, -100, 1),
+                Color.ORANGE));
+        //L
+        addTriangle(new Triangle(new Vertex(-100, -100, -100, 1),
+                new Vertex(100, -100, -100, 1),
+                new Vertex(100, -100, 100, 1),
+                Color.ORANGE));
 
     }
 
-    public void addRectangles(Rectangle rectangle) {
-        rectangles.add(rectangle);
+    public void addTriangle(Triangle triangle) {
+        triangles.add(triangle);
+    }
+
+    public Color getShade(Color color, double shade) {
+        double redLinear = Math.pow(color.getRed(), 2.4) * shade;
+        double greenLinear = Math.pow(color.getGreen(), 2.4) * shade;
+        double blueLinear = Math.pow(color.getBlue(), 2.4) * shade;
+
+        int red = (int) Math.pow(redLinear, 1/2.4);
+        int green = (int) Math.pow(greenLinear, 1/2.4);
+        int blue = (int) Math.pow(blueLinear, 1/2.4);
+        return new Color(red, green, blue);
     }
 
     public void paintComponent(Graphics g) {
@@ -59,55 +99,80 @@ public class MainPanel extends JPanel {
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         double heading = Math.toRadians(ui.getHeadingSlider().getValue());
-        Matrix3 headingTransform = new Matrix3(new double[] {
-                Math.cos(heading), 0, Math.sin(heading),
-                0, 1, 0,
-                -Math.sin(heading), 0, Math.cos(heading)
+        Matrix4 headingTransform = new Matrix4(new double[] {
+                Math.cos(heading), 0, Math.sin(heading), 0,
+                0, 1, 0, 0,
+                -Math.sin(heading), 0, Math.cos(heading), 0,
+                0, 0, 0, 1
         });
 
         double pitch = Math.toRadians(ui.getPitchSlider().getValue());
-        Matrix3 pitchTransform = new Matrix3(new double[] {
-                1, 0, 0,
-                0, Math.cos(pitch), Math.sin(pitch),
-                0, -Math.sin(pitch), Math.cos(pitch)
+        Matrix4 pitchTransform = new Matrix4(new double[] {
+                1, 0, 0, 0,
+                0, Math.cos(pitch), Math.sin(pitch), 0,
+                0, -Math.sin(pitch), Math.cos(pitch), 0,
+                0, 0, 0, 1
         });
 
-        Matrix3 transform = headingTransform.multiply(pitchTransform);
+        Matrix4 transform = headingTransform.multiply(pitchTransform);
 
-        g2.translate(getWidth() / 2, getHeight() / 2);
-        g2.setColor(Color.WHITE);
+        double[] zBuffer = new double[img.getWidth() * img.getHeight()];
+        for (int q = 0; q < zBuffer.length; q++) {
+            zBuffer[q] = Double.NEGATIVE_INFINITY;
+        }
 
+        for (Triangle t : triangles) {
+            Vertex v1 = transform.tranform(t.v1);
+            Vertex v2 = transform.tranform(t.v2);
+            Vertex v3 = transform.tranform(t.v3);
 
-        for (Rectangle r : rectangles) {
-            Vertex v1 = transform.tranform(r.v1);
-            Vertex v2 = transform.tranform(r.v2);
-            Vertex v3 = transform.tranform(r.v3);
-            Vertex v4 = transform.tranform(r.v4);
+            Vertex ab = new Vertex(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z, v2.w - v1.w);
+            Vertex ac = new Vertex(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z, v3.w - v1.w);
+            Vertex norm = new Vertex(
+                    ab.y * ac.z - ab.z * ac.y,
+                    ab.z * ac.x - ab.x * ac.z,
+                    ab.x * ac.y - ab.y * ac.x,
+                    1
+            );
 
-//            v1.x += getWidth() / 2;
-//            v1.y += getHeight() / 2;
-//            v2.x += getWidth() / 2;
-//            v2.y += getHeight() / 2;
-//            v3.x += getWidth() / 2;
-//            v3.y += getHeight() / 2;
-//            v4.x += getWidth() / 2;
-//            v4.y += getHeight() / 2;
+            double normalLength = Math.sqrt(norm.x * norm.x + norm.y * norm.y + norm.z * norm.z);
+            norm.x /= normalLength;
+            norm.y /= normalLength;
+            norm.z /= normalLength;
 
-            int minX = (int) Math.max(0, Math.ceil(Math.min(Math.min(v1.x, v2.x), Math.min(v3.x, v4.x))));
-            int maxX = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(Math.max(v1.x, v2.x), Math.max(v3.x, v4.x))));
-            int minY = (int) Math.max(0, Math.ceil(Math.min(Math.min(v1.y, v2.y), Math.min(v3.y, v4.y))));
-            int maxY = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(Math.max(v1.y, v2.y), Math.max(v3.y, v4.y))));
+            double angleCos = Math.abs(norm.z);
 
-            double rectangleArea = (v1.x - v2.x) * (v1.y - v3.y) + (v3.x - v4.x) * (v2.y - v3.y);
-            System.out.println(rectangleArea);
+            v1.x += getWidth() / 2;
+            v1.y += getHeight() / 2;
+            v2.x += getWidth() / 2;
+            v2.y += getHeight() / 2;
+            v3.x += getWidth() / 2;
+            v3.y += getHeight() / 2;
 
-            Path2D path = new Path2D.Double();
-            path.moveTo(v1.x, v1.y);
-            path.lineTo(v2.x, v2.y);
-            path.lineTo(v3.x, v3.y);
-            path.lineTo(v4.x, v4.y);
-            path.closePath();
-            g2.draw(path);
+            int minX = (int) Math.max(0, Math.ceil(Math.min(v1.x, Math.min(v2.x, v3.x))));
+            int maxX = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(v1.x, Math.max(v2.x, v3.x))));
+            int minY = (int) Math.max(0, Math.ceil(Math.min(v1.y, Math.min(v2.y, v3.y))));
+            int maxY = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(v1.y, Math.max(v2.y, v3.y))));
+
+            double triangleArea = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x);
+
+            for (int y = minY; y <= maxY; y++) {
+                for (int x = minX; x <= maxX; x++) {
+                    double b1 = ((y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - x)) / triangleArea;
+                    double b2 = ((y - v1.y) * (v3.x - v1.x) + (v3.y - v1.y) * (v1.x - x)) / triangleArea;
+                    double b3 = ((y - v2.y) * (v1.x - v2.x) + (v1.y - v2.y) * (v2.x - x)) / triangleArea;
+                    if (b1 >= 0 && b1 <= 1 && b2 >= 0 && b2 <= 1 && b3 >=0 && b3 <= 1) {
+                        double depth = b1 * v1.z + b2 * v2.z + b3 * v3.z;
+                        int zIndex = y * img.getWidth() + x;
+                        if (zBuffer[zIndex] < depth) {
+                            img.setRGB(x, y, getShade(t.c, angleCos).getRGB());
+                            zBuffer[zIndex] = depth;
+                        }
+                    }
+                }
+            }
+
+            g2.drawImage(img, 0, 0, null);
         }
     }
 }
