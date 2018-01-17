@@ -1,3 +1,4 @@
+import com.sun.glass.ui.Size;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 public class Other_Main_Drawer extends Application implements ActionListener {
 
     private static final double SCENE_SIZE = 700;
-    private static final double SIZE_TRANSFORMATION = 60;
+    private static final double SIZE_TRANSFORMATION = 80;
     private static final double TOOLBAR_HEIGHT = 100;
 
     private static final double CONTAINERW = 2.5;
@@ -92,8 +93,8 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         slider.setValue(0);
         slider.setShowTickLabels(false);
         slider.setShowTickMarks(false);
-        slider.setMajorTickUnit(50);
-        slider.setMinorTickCount(5);
+        slider.setMajorTickUnit(10);
+        slider.setMinorTickCount(1);
         slider.setBlockIncrement(10);
 
         CheckBox box1 = new CheckBox("Green");
@@ -111,7 +112,7 @@ public class Other_Main_Drawer extends Application implements ActionListener {
 
         addBox(1, 1, 2, 0, 0, 0,BOX_GREEN);
         addBox(1, 1, 4, 0, 0, 2,BOX_RED);
-        addBox(2, 2, 4, 0.5, 2, 8,BOX_BLUE);
+        //addBox(2, 2, 4, 0.5, 2, 8,BOX_BLUE);
         addBox(1, 1, 2, 1, 3, 2,BOX_GREEN);
         addBox(1, 1, 4, 1.5, 0, 6,BOX_RED);
 
@@ -135,6 +136,12 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         stage.show();
         scene3d.setWidth(stage.getWidth());
         scene3d.setHeight(stage.getHeight()-TOOLBAR_HEIGHT);
+
+        PentominoF penf = new PentominoF(2,2,9,SIZE_TRANSFORMATION);
+        PentominoF penf2 = new PentominoF(1,0.5,5,SIZE_TRANSFORMATION);
+        myGroup.getChildren().addAll(penf,penf2);
+        penf.rotate();
+
     }
 
     private class myBoxListener implements ChangeListener<Boolean>{
@@ -188,7 +195,6 @@ public class Other_Main_Drawer extends Application implements ActionListener {
 
         newB.setMaterial(createMaterial(boxc));
         myGroup.getChildren().addAll(newB);
-
     }
 
     public void createLines(double contW, double contH, double contD, double x, double y, double z) {
@@ -248,7 +254,7 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         launch(args);
     }
 
-    private static PhongMaterial createMaterial( Color boxc) {
+    public static PhongMaterial createMaterial( Color boxc) {
         PhongMaterial mat = new PhongMaterial();
         mat.setDiffuseColor(boxc);
         mat.diffuseMapProperty();
@@ -262,7 +268,9 @@ public class Other_Main_Drawer extends Application implements ActionListener {
 
     }
 
-
+    public static double getSizeTransformation(){
+        return SIZE_TRANSFORMATION;
+    }
 
 
 }
