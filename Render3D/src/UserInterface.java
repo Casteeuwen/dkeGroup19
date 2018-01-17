@@ -6,6 +6,7 @@ public class UserInterface implements Runnable {
     private JSlider headingSlider, pitchSlider;
     private MainPanel mPanel;
     private SidePanel sPanel;
+    private Logic logic;
 
     public UserInterface() {
 
@@ -13,8 +14,9 @@ public class UserInterface implements Runnable {
 
     @Override
     public void run() {
+        logic = new Logic();
         mPanel = new MainPanel(this);
-        sPanel = new SidePanel(this, mPanel);
+        sPanel = new SidePanel(this, mPanel, logic);
         frame = new JFrame("3D Renderer");
         frame.setPreferredSize(new Dimension(800, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

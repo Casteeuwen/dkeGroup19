@@ -2,16 +2,17 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Box {
+    final int BLOCK_SIZE = 10;
     private ArrayList<Triangle> triangles;
     int xCoord, yCoord, alpha;
-    int x, y, z;
+    double x, y, z;
     Color c;
 
-    public Box(int x, int y, int z, int xCoord, int yCoord, int alpha, Color c) {
+    public Box(double x, double y, double z, int xCoord, int yCoord, int alpha, Color c) {
         this.triangles = new ArrayList<>();
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.x = x * BLOCK_SIZE;
+        this.y = y * BLOCK_SIZE;
+        this.z = z * BLOCK_SIZE;
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.alpha = alpha;
@@ -93,6 +94,6 @@ public class Box {
 
     @Override
     public String toString() {
-        return "Box " + x + " " + y + " " + xCoord + " " + yCoord + " ";
+        return "Box " + x + " " + y + " " + z + " " + xCoord + " " + yCoord + " ";
     }
 }

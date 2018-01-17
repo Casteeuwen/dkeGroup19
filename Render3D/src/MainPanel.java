@@ -9,9 +9,12 @@ public class MainPanel extends JPanel {
 
     public MainPanel(UserInterface ui) {
         setPreferredSize(new Dimension(500, 500));
-        boxes = new ArrayList<>();
         this.ui = ui;
-        addBox(new Box(150, 50, 100, 0, 0, 50, Color.GRAY));
+        reset();
+    }
+
+    public void addBox(Box box) {
+        boxes.add(box);
     }
 
     public void printBoxes() {
@@ -20,9 +23,9 @@ public class MainPanel extends JPanel {
         }
     }
 
-    public void addBox(Box box) {
-        boxes.add(box);
-        System.out.println(box.xCoord + " " + box.yCoord + " " + box.c);
+    public void reset() {
+        boxes = new ArrayList<>();
+        addBox(new Box(16.5, 4.0, 2.5, 0, 0, 50, Color.GRAY));
     }
 
     public Color getShade(Color color, double shade, int alpha) {

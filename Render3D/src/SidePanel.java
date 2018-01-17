@@ -6,10 +6,12 @@ import java.awt.event.ActionListener;
 public class SidePanel extends JPanel {
     UserInterface ui;
     MainPanel mPanel;
+    Logic logic;
 
-    public SidePanel(UserInterface ui, MainPanel mPanel) {
+    public SidePanel(UserInterface ui, MainPanel mPanel, Logic logic) {
         this.ui = ui;
         this.mPanel = mPanel;
+        this.logic = logic;
         setPreferredSize(new Dimension(300, 500));
         createComponents();
     }
@@ -51,10 +53,19 @@ public class SidePanel extends JPanel {
         JTextField output = new JTextField(20);
         output.setPreferredSize(new Dimension(300, 300));
 
+
         JPanel buttonPanel = new JPanel();
         JButton startBtn = new JButton("Start");
         JButton pauseBtn = new JButton("Pause");
         JButton addBox = new JButton("Add Box");
+        JButton reset = new JButton("Reset");
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mPanel.reset();
+                mPanel.repaint();
+            }
+        });
         startBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,14 +75,14 @@ public class SidePanel extends JPanel {
         addBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                mPanel.addShape(50, 50, 50, new Box(100, 100, 255, Color.RED));
-                mPanel.addBox(new Box(50, 50, 50, 100, 100, 255, Color.RED));
+                mPanel.addBox(logic.addRandomBox());
                 mPanel.repaint();
             }
         });
         buttonPanel.add(startBtn);
         buttonPanel.add(pauseBtn);
         buttonPanel.add(addBox);
+        buttonPanel.add(reset);
 
         super.add(list);
         super.add(inputOptions);
