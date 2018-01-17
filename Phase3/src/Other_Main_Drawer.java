@@ -22,6 +22,7 @@ import javafx.util.Duration;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Other_Main_Drawer extends Application implements ActionListener {
 
@@ -33,7 +34,7 @@ public class Other_Main_Drawer extends Application implements ActionListener {
     private static final double CONTAINERD = 16.5;
 
     private static final double BOX_OPACITY = 0.5;
-    private static final Color BOX_COLOR = Color.rgb(50, 255, 150, BOX_OPACITY);
+    private static final Color BOX_DARK = Color.rgb(0, 0, 0, 0);
     private static final Color BOX_GREEN = Color.rgb(0,200,0,BOX_OPACITY);
     private static final Color BOX_BLUE = Color.rgb(0,0,200,BOX_OPACITY);
     private static final Color BOX_RED = Color.rgb(200,0,0,BOX_OPACITY);
@@ -46,14 +47,13 @@ public class Other_Main_Drawer extends Application implements ActionListener {
     private Timer tm;
     private double rotation = 1;
 
-    Scene scene;
-    SubScene scene3d;
+    private Scene scene;
+    private SubScene scene3d;
 
     private Group myGroup = new Group(new AmbientLight(AMBIENT_COLOR), createPointLight());
 
     @Override
     public void start(Stage stage) throws Exception {
-
         scene3d = new SubScene(
                 myGroup,
                 SCENE_SIZE, SCENE_SIZE,
@@ -73,7 +73,6 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         myGroup.setDepthTest(DepthTest.ENABLE);
 
 
-
         BorderPane pane = new BorderPane();
         pane.setCenter(scene3d);
         Slider slider = new Slider();
@@ -86,36 +85,66 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         slider.setMinorTickCount(5);
         slider.setBlockIncrement(10);
 
+        CheckBox box1 = new CheckBox("Green");
+        box1.selectedProperty().addListener(new myBoxListener(BOX_GREEN));
+        box1.setSelected(true);
+
+        CheckBox box2 = new CheckBox("Red");
+        box2.selectedProperty().addListener(new myBoxListener(BOX_RED));
+        box2.selectedProperty().addListener(new myBoxListener(BOX_RED));
+        box2.setSelected(true);
+
+        CheckBox box3 = new CheckBox("Blue");
+        box3.selectedProperty().addListener(new myBoxListener(BOX_BLUE));
+        box3.setSelected(true);
+
         addBox(1, 1, 2, 0, 0, 0,BOX_GREEN);
         addBox(1, 1, 4, 0, 0, 2,BOX_RED);
+        addBox(2, 2, 4, 2, 2, 8,BOX_BLUE);
+
 
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
                 int newV = new_val.intValue();
                 int oldV = old_val.intValue();
                 myGroup.getTransforms().add(new Rotate((newV - oldV), CONTAINERW * SIZE_TRANSFORMATION / 2, 0, CONTAINERD * SIZE_TRANSFORMATION / 2, Rotate.Y_AXIS));
-                System.out.println(newV);
-                //this is just to test if you can still add boxes at the right location, even with transformations
-                if (newV > 192) {
-                    addBox(2, 2, 4, 2, 2, 8,BOX_BLUE);
-
-                }
             }
         });
 
-        ToolBar toolBar = new ToolBar(slider);
+        ToolBar toolBar = new ToolBar(slider,box1,box2,box3);
         toolBar.setMinHeight(100);
         toolBar.setOrientation(Orientation.HORIZONTAL);
         pane.setTop(toolBar);
         pane.setPrefSize(800, 800);
         scene = new Scene(pane);
+
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
-        System.out.println(scene.getWidth());
+        scene3d.setWidth(stage.getWidth());
 
-        Timer tm = new Timer(5, this);
-        tm.start();
     }
+
+    private class myBoxListener implements ChangeListener<Boolean>{
+        Color listensfor;
+        private myBoxListener(Color lf){
+            listensfor = lf;
+        }
+
+        public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+            for (Node node : myGroup.getChildrenUnmodifiable()) {
+                if (node instanceof ColorBox) {
+                    ColorBox thisbox = (ColorBox) node;
+                    Color c = thisbox.getOriginalColor();
+                    if (c == listensfor) {
+                        if (new_val){thisbox.setMaterial(createMaterial(listensfor));}
+                        if (!new_val){thisbox.setMaterial(createMaterial(BOX_DARK));}
+                    }
+                }
+            }
+        }
+    }
+
 
     private PointLight createPointLight() {
         PointLight light = new PointLight(LIGHT_COLOR);
@@ -139,7 +168,7 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         y *= SIZE_TRANSFORMATION;
         z *= SIZE_TRANSFORMATION;
 
-        Box newB = new Box(w, h, d);
+        ColorBox newB = new ColorBox(w, h, d, boxc);
         newB.setTranslateX(x);
         newB.setTranslateY(y);
         newB.setTranslateZ(z);
@@ -147,6 +176,7 @@ public class Other_Main_Drawer extends Application implements ActionListener {
 
         newB.setMaterial(createMaterial(boxc));
         myGroup.getChildren().addAll(newB);
+
     }
 
     public void createLines(double contW, double contH, double contD, double x, double y, double z) {
@@ -214,19 +244,13 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         return mat;
     }
 
-    
-
-    double oldw = SCENE_SIZE;
-    double neww;
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        neww = scene.getWidth();
-        if (neww != oldw) {
-            scene3d.setWidth(neww);
-            System.out.println(neww);
-        }
-        oldw = neww;
+
     }
+
+
+
 
 }
