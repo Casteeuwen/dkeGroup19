@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Box;
@@ -28,6 +29,7 @@ public class Other_Main_Drawer extends Application implements ActionListener {
 
     private static final double SCENE_SIZE = 700;
     private static final double SIZE_TRANSFORMATION = 60;
+    private static final double TOOLBAR_HEIGHT = 100;
 
     private static final double CONTAINERW = 2.5;
     private static final double CONTAINERH = 4;
@@ -60,12 +62,21 @@ public class Other_Main_Drawer extends Application implements ActionListener {
                 true,
                 SceneAntialiasing.BALANCED
         );
-        scene3d.setFill(Color.MIDNIGHTBLUE.darker().darker());
 
-        camera.setTranslateX(-300);
+        camera.setTranslateX(-330);
         camera.setTranslateY(-300);
         scene3d.setCamera(camera);
-        scene3d.setWidth(300);
+
+        try {
+            //add h to ...ttps to get a working image, (rendering is weird so i broke it on purpose)
+            Image backImg = new Image("ttps://media.istockphoto.com/photos/four-vertical-rows-of-shipping-containers-picture-id515306829?k=6&m=515306829&s=612x612&w=0&h=f-NpL4KEtnd_c1V2ax5IYB3RrTmOB5TCQ-YNQg_OXfQ=");
+            ImagePattern pattern = new ImagePattern(backImg);
+            scene3d.setFill(pattern);
+
+        }catch(Exception e){
+            System.out.println("NO IMAGE FOUND");
+            scene3d.setFill(Color.MIDNIGHTBLUE.darker().darker());
+        }
 
 
         createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
@@ -100,8 +111,9 @@ public class Other_Main_Drawer extends Application implements ActionListener {
 
         addBox(1, 1, 2, 0, 0, 0,BOX_GREEN);
         addBox(1, 1, 4, 0, 0, 2,BOX_RED);
-        addBox(2, 2, 4, 2, 2, 8,BOX_BLUE);
-
+        addBox(2, 2, 4, 0.5, 2, 8,BOX_BLUE);
+        addBox(1, 1, 2, 1, 3, 2,BOX_GREEN);
+        addBox(1, 1, 4, 1.5, 0, 6,BOX_RED);
 
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
@@ -112,7 +124,7 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         });
 
         ToolBar toolBar = new ToolBar(slider,box1,box2,box3);
-        toolBar.setMinHeight(100);
+        toolBar.setMinHeight(TOOLBAR_HEIGHT);
         toolBar.setOrientation(Orientation.HORIZONTAL);
         pane.setTop(toolBar);
         pane.setPrefSize(800, 800);
@@ -122,7 +134,7 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         stage.setScene(scene);
         stage.show();
         scene3d.setWidth(stage.getWidth());
-
+        scene3d.setHeight(stage.getHeight()-TOOLBAR_HEIGHT);
     }
 
     private class myBoxListener implements ChangeListener<Boolean>{
@@ -137,8 +149,8 @@ public class Other_Main_Drawer extends Application implements ActionListener {
                     ColorBox thisbox = (ColorBox) node;
                     Color c = thisbox.getOriginalColor();
                     if (c == listensfor) {
-                        if (new_val){thisbox.setMaterial(createMaterial(listensfor));}
-                        if (!new_val){thisbox.setMaterial(createMaterial(BOX_DARK));}
+                        if (new_val){thisbox.setVisible(true);}
+                        if (!new_val){thisbox.setVisible(false);}
                     }
                 }
             }
