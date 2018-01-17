@@ -2,80 +2,108 @@ import java.util.Scanner;
 
 public class KnapsackProblem{
 
-  private static final int WEIGHT = 7; //fixed weight limit
-  private static int[][] ITEMS = new int[4][2]; //array storing 4 items with weight and value respectively
-  private static int[][] table = new int[ITEMS.length+1][WEIGHT+2]; //one more column for the items themselves
+  private static final double WEIGHT = 165.0; //fixed weight limit
+  private static double[][] ITEMS = new double[3][2]; //array storing 3 weights for Phase 3
+  private static String[] itemName = {"A", "B", "C"}; //fixed name of items for Phase 3
+  //new String[ITEMS.length];
+  private static int[] maxInstancesOfItem = new int[ITEMS.length];
+  /* WHAT maxInstancesOfItem REPRESENTS:
+  (weight limit) / (weight of an item). This gives the max amount of times that an item can be picked to reach the limit weight by itself.
+  This value is used for each item on the recursive method to find out the BEST number of times
+  an item must be chosen to achieve maximum value.
+  */
+  private static int[] bestInstancesOfItem = new int[ITEMS.length];
+  /* WHAT bestInstancesOfItem REPRESENTS:
+  This array will store the final number of times an item is used to achieve maximum value.
+  Hence why it is writen as bestInstancesOfItem.
+  */
+  private static int[] chosenInstancesOfItem = new int[ITEMS.length];
+  /* WHAT chosenInstancesOfItem REPRESENTS:
+  This array can be seen as something similar to bestInstancesOfItem, but it doesn't
+  only keep track of the final values. It also updates them from the first item to
+  the last one, and taking into account every possibility. Only if a few confitions are met (line 95 - 99),
+  the values updated here will then be passed to bestInstancesOfItem, and these will get
+  updated until the conditions are not met anymore (line 99 - 103). Once they are not met anymore,
+  the values on bestInstancesOfItem will be the final ones to represent the used instances of each item.
+  */
+  private static double[] bestWV = new double[ITEMS[0].length];
+  /* WHAT bestWV REPRESENTS:
+  This array simply saves the constantly updated variables of value and weight of the overall system,
+  where bestWV[0] = weight and bestWV[1] = value. These are then used to print the numbers for both
+  variables on along with the other relevant information printed out.
+  */
+  private static double updatedValue; //updates the value.
+  private static double updatedWeight; //updates the weight.
+
+  /*
+  The reason why updatedValue and updatedWeight are not used to print the results for total value and weight is
+  because these variables constantly save values. At one point the variable that updates the weight will be > WEIGHT.
+  This means that if you tried using these variables, the weight (volume) covered by the pieces was > than the limit weight,
+  and that is impossible. That is why BestWV is used for that, because it only takes in numbers if the condition in line 99 is met.
+  */
 
   public static void main(String[] args){
 
     Scanner in = new Scanner(System.in);
 
-    for(int i = 0; i<ITEMS.length; i++){
+    for(int i = 0; i<ITEMS.length; i++){ //input for weight and value of each item
+      /*System.out.println("Type in the name for item " + (i+1));
+      itemName[i] = in.next();*/
       for(int j = 0; j<ITEMS[0].length; j++){
         if(j == 0){
-          System.out.println("Type in weight for " + (i+1) + " item.");
-          ITEMS[i][j] = in.nextInt();
+          System.out.println("Type in the weight for item " + (i+1));
+          ITEMS[i][j] = in.nextDouble();
         }else{
-          System.out.println("Type in value for " + (i+1) + " item.");
-          ITEMS[i][j] = in.nextInt();
+          System.out.println("Type in value for item " + (i+1));
+          ITEMS[i][j] = in.nextDouble();
         }
       }
     }
+    Knapsack(); //call to method Knapsack
+  }
 
-    table[0][0] = 0; //set valye of position (0,0) to 0.
-    for(int i = 1; i<(WEIGHT+2); i++){
-      table[0][i] = i-1; //weights for reference on the first row
+  public static void Knapsack(){
+
+    for (int i = 0; i <ITEMS.length; i++){ //values for maxInstancesOfItem --> (WEIGHT) / (weight of item[i])
+      maxInstancesOfItem[i] = (int)(WEIGHT / ITEMS[i][0]);
     }
-    for(int i = 1; i<(ITEMS.length+1); i++){
-      table[i][0] = ITEMS[i-1][0]; //set first colum with weights of different items
-    }
-    for(int i = 1; i<(ITEMS.length+1); i++){
-      for(int j = 1; j<(WEIGHT+2); j++){
-          if((i == 1) && (table[0][j] == 0)){
-            table[i][j] = 0; //set to zero when weight limit is 0
-          }
-          if((i == 1) && (table[i][0] <= table[0][j])){
-            table[i][j] = valueOf(table[i][0]); //fill boxes of row 1 with the value of the first item on the table.
-          }
-          if((table[0][j] < table[i][0]) && (i != 1)){
-            table[i][j] = table[i-1][j]; //put the value of the box above it if weight is smaller than limit weight
-          }
-          if((table[0][j] >= table[i][0]) && (i != 1)){
-            table[i][j] = Math.max(valueOf(table[i][0]) + table[i - 1][j - table[i][0]], table[i-1][j]); //compare the value of item + value on position x after algorithm, versus value above the number where we are at.
-          }
+
+    KnapsackDP(0); //call to recursive method starting with first item (ITEMS[0][0 or 1])
+
+    System.out.println("The volume (weight) occupied with all selected items is: " + bestWV[0]); //prints weight covered by chosen items
+    System.out.println("Max value: " + bestWV[1]);
+    System.out.print("To obtain this value, the selection of items is the following: ");
+    for (int i = 0; i < ITEMS.length; i++){
+      if(i == ITEMS.length-1){ //if i = last item, don't write a comma afterwards (so that it looks like x A, x B, x C)
+        System.out.println(bestInstancesOfItem[i] + " " + itemName[i]); //print best choice for item i, along with its name (both if and else)
+      }else{
+        System.out.print(bestInstancesOfItem[i] + " " + itemName[i] + ", ");
       }
-   }
-   for(int i = 1; i<(ITEMS.length + 1); i++){ //print the table with the results
-     for(int j = 1; j<(WEIGHT+2); j++){
-        System.out.print(table[i][j]);
-     }
-     System.out.println();
-   }
-    System.out.println("Max value = " + knapsack(ITEMS.length-1, WEIGHT));
-  }
-
-  public static int valueOf(int value){ //takes in the weight of the item, and returns its corresponding value
-    if(value == ITEMS[0][0]){
-      return ITEMS[0][1];
-    }else if(value == ITEMS[1][0]){
-      return ITEMS[1][1];
-    }else if(value == ITEMS[2][0]){
-      return ITEMS[2][1];
-    }else if(value == ITEMS[3][0]){
-      return ITEMS[3][1];
-    }else{
-    return 0; //just so the computer does not complain about return statement missing, but it will never get here (as long as weights are the ones above).
     }
   }
 
-  public static int knapsack(int i, int W) { //recursive method to find maximum sum of value
-    if(i < 0){ //base case
-      return 0;
-    }
-    if(ITEMS[i][0] > W){ //if weight of item is > weight limit
-      return knapsack(i-1, W);
-    }else{ //if weight of item is <= weight limit
-      return Math.max(knapsack(i-1, W), knapsack(i-1, W - ITEMS[i][0]) + ITEMS[i][1]);
+  public static void KnapsackDP(int item){ //recursive method
+
+    for(int i = 0; i <= maxInstancesOfItem[item]; i++){ //check for every instance of first item
+      chosenInstancesOfItem[item] = i;
+
+      if(item < ITEMS.length-1){ //if item < 2
+        KnapsackDP(item+1); //call method again with item 1
+      }else{
+        updatedValue = 0.0; //updatedValue and updatedWeight reset to 0 always on the else.
+        updatedWeight = 0.0;
+        for(int j = 0; j <ITEMS.length; j++){ //for every item (and their instances), the total sum of values and weights is determined.
+          updatedValue += chosenInstancesOfItem[j] * ITEMS[j][1];
+          updatedWeight += chosenInstancesOfItem[j] * ITEMS[j][0];
+        }
+        if(updatedValue > bestWV[1] && updatedWeight <= WEIGHT){ //if values meet these conditions, then they get passed onto bestWV
+          bestWV[1] = updatedValue;
+          bestWV[0] = updatedWeight;
+          for (int j = 0; j <ITEMS.length; j++){
+            bestInstancesOfItem[j] = chosenInstancesOfItem[j]; //store in bestInstancesOfItem[] the number of times a single item was succesfully used.
+          }
+        }
+      }
     }
   }
 }
