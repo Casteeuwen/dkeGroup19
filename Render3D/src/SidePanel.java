@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SidePanel extends JPanel {
     UserInterface ui;
@@ -53,6 +55,20 @@ public class SidePanel extends JPanel {
         JButton startBtn = new JButton("Start");
         JButton pauseBtn = new JButton("Pause");
         JButton addBox = new JButton("Add Box");
+        startBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mPanel.printBoxes();
+            }
+        });
+        addBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                mPanel.addShape(50, 50, 50, new Box(100, 100, 255, Color.RED));
+                mPanel.addBox(new Box(50, 50, 50, 100, 100, 255, Color.RED));
+                mPanel.repaint();
+            }
+        });
         buttonPanel.add(startBtn);
         buttonPanel.add(pauseBtn);
         buttonPanel.add(addBox);

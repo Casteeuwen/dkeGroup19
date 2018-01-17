@@ -5,6 +5,7 @@ public class UserInterface implements Runnable {
     private JFrame frame;
     private JSlider headingSlider, pitchSlider;
     private MainPanel mPanel;
+    private SidePanel sPanel;
 
     public UserInterface() {
 
@@ -13,8 +14,9 @@ public class UserInterface implements Runnable {
     @Override
     public void run() {
         mPanel = new MainPanel(this);
+        sPanel = new SidePanel(this, mPanel);
         frame = new JFrame("3D Renderer");
-        frame.setPreferredSize(new Dimension(400, 400));
+        frame.setPreferredSize(new Dimension(800, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         createComponents(frame.getContentPane());
         frame.pack();
@@ -31,9 +33,10 @@ public class UserInterface implements Runnable {
         pitchSlider.addChangeListener(e -> mPanel.repaint());
 
         container.add(headingSlider, BorderLayout.SOUTH);
-        container.add(pitchSlider, BorderLayout.EAST);
+        container.add(pitchSlider, BorderLayout.WEST);
 
         container.add(mPanel, BorderLayout.CENTER);
+        container.add(sPanel, BorderLayout.EAST);
     }
 
     public JSlider getHeadingSlider() {
@@ -42,5 +45,9 @@ public class UserInterface implements Runnable {
 
     public JSlider getPitchSlider() {
         return pitchSlider;
+    }
+
+    public JFrame getFrame() {
+        return frame;
     }
 }
