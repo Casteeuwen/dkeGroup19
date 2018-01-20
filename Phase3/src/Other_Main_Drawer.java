@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class Other_Main_Drawer extends Application implements ActionListener {
 
     private static final double SCENE_SIZE = 700;
-    private static final double SIZE_TRANSFORMATION = 80;
+    private static final double SIZE_TRANSFORMATION = 50;
     private static final double TOOLBAR_HEIGHT = 100;
 
     private static final double CONTAINERW = 2.5;
@@ -97,6 +97,16 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         slider.setMinorTickCount(1);
         slider.setBlockIncrement(10);
 
+        Slider slider2 = new Slider();
+        slider2.setMin(0);
+        slider2.setMax(90);
+        slider2.setValue(0);
+        slider2.setShowTickLabels(false);
+        slider2.setShowTickMarks(false);
+        slider2.setMajorTickUnit(10);
+        slider2.setMinorTickCount(1);
+        slider2.setBlockIncrement(10);
+
         CheckBox box1 = new CheckBox("Green");
         box1.selectedProperty().addListener(new myBoxListener(BOX_GREEN));
         box1.setSelected(true);
@@ -110,21 +120,29 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         box3.selectedProperty().addListener(new myBoxListener(BOX_BLUE));
         box3.setSelected(true);
 
-        addBox(1, 1, 2, 0, 0, 0,BOX_GREEN);
-        addBox(1, 1, 4, 0, 0, 2,BOX_RED);
-        //addBox(2, 2, 4, 0.5, 2, 8,BOX_BLUE);
-        addBox(1, 1, 2, 1, 3, 2,BOX_GREEN);
-        addBox(1, 1, 4, 1.5, 0, 6,BOX_RED);
+//        addBox(1, 1, 2, 0, 0, 0,BOX_GREEN);
+//        addBox(1, 1, 4, 0, 0, 2,BOX_RED);
+//        addBox(2, 2, 4, 0.5, 2, 8,BOX_BLUE);
+//        addBox(1, 1, 2, 1, 3, 2,BOX_GREEN);
+//        addBox(1, 1, 4, 1.5, 0, 6,BOX_RED);
 
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
                 int newV = new_val.intValue();
                 int oldV = old_val.intValue();
-                myGroup.getTransforms().add(new Rotate((newV - oldV), CONTAINERW * SIZE_TRANSFORMATION / 2, 0, CONTAINERD * SIZE_TRANSFORMATION / 2, Rotate.Y_AXIS));
+                myGroup.getTransforms().add(new Rotate((newV - oldV), CONTAINERW * SIZE_TRANSFORMATION / 2, CONTAINERH/SIZE_TRANSFORMATION/2, CONTAINERD * SIZE_TRANSFORMATION / 2, Rotate.Y_AXIS));
             }
         });
 
-        ToolBar toolBar = new ToolBar(slider,box1,box2,box3);
+        slider2.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+                int newV = new_val.intValue();
+                int oldV = old_val.intValue();
+                myGroup.getTransforms().add(new Rotate((newV - oldV), CONTAINERW * SIZE_TRANSFORMATION / 2, CONTAINERH/SIZE_TRANSFORMATION/2, CONTAINERD * SIZE_TRANSFORMATION / 2, Rotate.X_AXIS));
+            }
+        });
+
+        ToolBar toolBar = new ToolBar(slider, slider2,box1,box2,box3);
         toolBar.setMinHeight(TOOLBAR_HEIGHT);
         toolBar.setOrientation(Orientation.HORIZONTAL);
         pane.setTop(toolBar);
@@ -138,9 +156,12 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         scene3d.setHeight(stage.getHeight()-TOOLBAR_HEIGHT);
 
         PentominoF penf = new PentominoF(2,2,9,SIZE_TRANSFORMATION);
-        PentominoF penf2 = new PentominoF(1,0.5,5,SIZE_TRANSFORMATION);
+        PentominoF penf2 = new PentominoF(0,0,0,SIZE_TRANSFORMATION);
         myGroup.getChildren().addAll(penf,penf2);
-        penf.rotate();
+        //penf.rotateMatrixLeft(4);
+        //penf2.rotateMatrixRight(3);
+        //penf2.rotateMatrixY(1);
+        penf2.rotateMatrixX(2);
 
     }
 
