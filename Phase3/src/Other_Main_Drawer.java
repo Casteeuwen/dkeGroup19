@@ -120,11 +120,11 @@ public class Other_Main_Drawer extends Application implements ActionListener {
         box3.selectedProperty().addListener(new myBoxListener(BOX_BLUE));
         box3.setSelected(true);
 
-//        addBox(1, 1, 2, 0, 0, 0,BOX_GREEN);
-//        addBox(1, 1, 4, 0, 0, 2,BOX_RED);
-//        addBox(2, 2, 4, 0.5, 2, 8,BOX_BLUE);
-//        addBox(1, 1, 2, 1, 3, 2,BOX_GREEN);
-//        addBox(1, 1, 4, 1.5, 0, 6,BOX_RED);
+        addBox(1, 1, 2, 0, 0, 0,BOX_GREEN);
+        addBox(1, 1, 4, 0, 0, 2,BOX_RED);
+        addBox(2, 2, 4, 0.5, 2, 8,BOX_BLUE);
+        addBox(1, 1, 2, 1, 3, 2,BOX_GREEN);
+        addBox(1, 1, 4, 1.5, 0, 6,BOX_RED);
 
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
