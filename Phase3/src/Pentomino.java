@@ -3,13 +3,29 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 
+/**
+ * This class is a collection of ColorBox objects, grouped together to form a pentomino.
+ * The class does not function seperately, you need the child objects (pentominoT,pentominoF,pentominoP).
+ * In javafx, you can treat this object as a simple shape, which is really useful.
+ */
 public abstract class Pentomino extends Group {
     Box[][][] boxgrid = new Box[3][3][3];
     double nontransformedbloxsize = 0.5;
     double size_transform;
     final int GRID_SIZE = 3;
+    Color pentcolor;
 
-    public Pentomino(double x, double y, double z, double size_transformation) {
+    /**
+     * Constructs a Pentomino
+     * @param x
+     * @param y
+     * @param z
+     * @param size_transformation
+     * @param c
+     */
+    public Pentomino(double x, double y, double z, double size_transformation, Color c) {
+        pentcolor = c;
+
         size_transform = size_transformation;
         x *= size_transform;
         y *= size_transform;
@@ -23,16 +39,30 @@ public abstract class Pentomino extends Group {
         handleLocations();
     }
 
+    /**
+     * Has to be overriden by child-class. Constructs the beginarray of boxes
+     */
     public abstract void createBeginShape();
 
-
+    /**
+     * Creates a javafx box at the right blocksize and transformation.
+     * Also sets it to the right material color.
+     * You basically call this method for each of the 5 boxes of the pentomino.
+     * @param ntblocksize
+     * @param size_transform
+     * @return
+     */
     public Box getNewBox(double ntblocksize, double size_transform) {
         Box newb = new Box(ntblocksize * size_transform, ntblocksize * size_transform, ntblocksize * size_transform);
-        PhongMaterial mat = Other_Main_Drawer.createMaterial(Color.GREEN);
+        PhongMaterial mat = Other_Main_Drawer.createMaterial(pentcolor);
         newb.setMaterial(mat);
         return newb;
     }
 
+    /**
+     * Sets the location of all the boxes in the boxarray to the right ones.
+     * Is called when a pentomino is constructed, but also after a rotation.
+     */
     public void handleLocations() {
         this.getChildren().clear();
         for (int i = 0; i < boxgrid.length; i++) {
@@ -49,25 +79,11 @@ public abstract class Pentomino extends Group {
         }
     }
 
-    public void rotate() {
-        this.getChildren().clear();
-        Box[][][] tempboxes = new Box[3][3][3];
-        for (int i = 0; i < boxgrid.length; i++) {
-            for (int j = 0; j < boxgrid[0].length; j++) {
-                for (int k = 0; k < boxgrid[0][0].length; k++) {
 
-                }
-            }
-        }
-        boxgrid = tempboxes;
-    }
-
-    public void rotateMatrixRight(int ticks){
-        rotateMatrixLeft(4-ticks);
-    }
-
-    public void rotateMatrixLeft(int ticks){ rotateMatrixZ(ticks);}
-
+    /**
+     * Rotate Pentomino around Z axis. All rotation is done around the middle of the boxgrid. So boxgrid[1][1][1].
+     * @param ticks every tick is 90 degrees. So 4 ticks is a full rotation
+     */
     public void rotateMatrixZ(int ticks) {
         for (int n = 0; n<ticks;n++) {
             int w = GRID_SIZE;
@@ -85,6 +101,10 @@ public abstract class Pentomino extends Group {
         handleLocations();
     }
 
+    /**
+     * Rotate Pentomino around Y axis. All rotation is done around the middle of the boxgrid. So boxgrid[1][1][1].
+     * @param ticks every tick is 90 degrees. So 4 ticks is a full rotation
+     */
     public void rotateMatrixY(int ticks){
         for (int n = 0; n<ticks;n++) {
             int w = GRID_SIZE;
@@ -103,6 +123,10 @@ public abstract class Pentomino extends Group {
         handleLocations();
     }
 
+    /**
+     * Rotate Pentomino around x axis. All rotation is done around the middle of the boxgrid. So boxgrid[1][1][1].
+     * @param ticks every tick is 90 degrees. So 4 ticks is a full rotation
+     */
     public void rotateMatrixX(int ticks){
         for (int n = 0; n<ticks;n++) {
             int w = GRID_SIZE;
@@ -120,4 +144,14 @@ public abstract class Pentomino extends Group {
         }
         handleLocations();
     }
+
+    /**
+     * @return original color of pentomino, used for setting visibility
+     */
+    public Color getOriginalColor(){
+        return pentcolor;
+    }
+
+
+
 }
