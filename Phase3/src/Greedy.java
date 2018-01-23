@@ -1,3 +1,5 @@
+import javafx.scene.paint.Color;
+
 import java.util.Scanner;
 import java.lang.*;
 import javax.swing.*;
@@ -12,28 +14,28 @@ public class Greedy{
 	private static double CommonLargestFactor;
 	private static boolean[][][]lbox;
 	private static double[][] solution;
-	public static void main(String[] args){
+	public static void startAlgo(){
 		solution = new double[0][6];
 		boxes = new double[nob+1][4];
 		LargeBox = new double[4];
 		boxinfo = new double[nob+1][3];
 		//FILL IN BELLOW:
 		CommonLargestFactor = 0.5;
-		boxes[1][1] = 2 / CommonLargestFactor;// <-- Box 1 height
+		boxes[1][1] = 1 / CommonLargestFactor;// <-- Box 1 height
 		boxes[1][2] = 1 / CommonLargestFactor;// <-- Box 1 width
-		boxes[1][3] = 1 / CommonLargestFactor;// <-- Box 1 length
-		boxes[2][1] = 2 / CommonLargestFactor;// <-- Box 2 height
+		boxes[1][3] = 2 / CommonLargestFactor;// <-- Box 1 length
+		boxes[2][1] = 1 / CommonLargestFactor;// <-- Box 2 height
 		boxes[2][2] = 1.5 / CommonLargestFactor;// <-- Box 2 width
-		boxes[2][3] = 1 / CommonLargestFactor;// <-- Box 2 length
+		boxes[2][3] = 2 / CommonLargestFactor;// <-- Box 2 length
 		boxes[3][1] = 1.5 / CommonLargestFactor;// <-- Box 3 height
 		boxes[3][2] = 1.5 / CommonLargestFactor;// <-- Box 3 width
 		boxes[3][3] = 1.5 / CommonLargestFactor;// <-- Box 3 length
-		boxinfo[1][1] = 3 / boxes[1][1] / boxes[1][2] / boxes[1][3];// <<-- Score of Box 1
-		boxinfo[2][1] = 4 / boxes[2][1] / boxes[2][2] / boxes[2][3];// <<-- Score of Box 2
-		boxinfo[3][1] = 5 / boxes[3][1] / boxes[3][2] / boxes[3][3];// <<-- Score of Box 3
-		boxinfo[1][2] = 100;// <<-- Max amount of Box 1
-		boxinfo[2][2] = 100;// <<-- Max amount of Box 2
-		boxinfo[3][2] = 100;// <<-- Max amount of Box 3
+		boxinfo[1][1] = 1 / boxes[1][1] / boxes[1][2] / boxes[1][3];// <<-- Score of Box 1
+		boxinfo[2][1] = 1 / boxes[2][1] / boxes[2][2] / boxes[2][3];// <<-- Score of Box 2
+		boxinfo[3][1] = 1 / boxes[3][1] / boxes[3][2] / boxes[3][3];// <<-- Score of Box 3
+		boxinfo[1][2] = 10;// <<-- Max amount of Box 1
+		boxinfo[2][2] = 10;// <<-- Max amount of Box 2
+		boxinfo[3][2] = 10;// <<-- Max amount of Box 3
 		LargeBox[1] = 4 / CommonLargestFactor;// <-- LargeBox height
 		LargeBox[2] = 2.5 / CommonLargestFactor;// <-- LargeBox width
 		LargeBox[3] = 16.5 / CommonLargestFactor;// <-- LargeBox length
@@ -43,9 +45,10 @@ public class Greedy{
 		if(boxinfo[1][2] < boxinfo[1][2]){swap(2,3);}
 		if(boxinfo[1][1] < boxinfo[1][2]){swap(1,2);}
 		FillInBox();
+		displayBoxes();
 	}
-
-
+	
+	
 	private static void swap(int x, int y){// swaps the order of the boxes x and y (used in main method)
 		double[] tempbox = new double[4];
 		for(int i = 1; i < 4; i++){tempbox[i] = boxes[x][i];}//  }
@@ -56,8 +59,8 @@ public class Greedy{
 		for(int i = 1; i < 3; i++){boxinfo[x][i] = boxinfo[y][i];}//}}box info
 		for(int i = 1; i < 3; i++){boxinfo[y][i] = tempbox[i];}//   }
 	}
-
-
+	
+	
 	private static void FillInBox(){
 		for( int u = 1; u < 3; u++){// <<-- Box number
 			for( int i = 0; i < LargeBox[1]; i++){//			}
@@ -74,7 +77,7 @@ public class Greedy{
 			}
 		}
 	}
-
+	
 	private static boolean fitcheck(int B, int O, int i, int j, int k){// false = fit, true = can't fit (it makes a earlier part easier)
 		double[] tempbox = new double[4];
 		switch(O){
@@ -123,13 +126,10 @@ public class Greedy{
 		AddSolution(B, i, j, k, O);
 		return false;
 	}
-
+	
 	public static void AddSolution(int B, int i, int j, int k, int R){
 		double[][] temp = new double[solution.length+1][6];
-		for(int a = 0; i< solution.length; i++){
-			for(int s = 1; s < 6; s++){
-				temp[a][s] = solution[a][s];}
-			}
+		for(int a = 0; i< solution.length; i++){for(int s = 1; s < 6; s++){temp[a][s] = solution[a][s];}}
 		temp[solution.length][1] = B;
 		temp[solution.length][2] = R;
 		temp[solution.length][3] = CommonLargestFactor * i;
@@ -137,7 +137,7 @@ public class Greedy{
 		temp[solution.length][5] = CommonLargestFactor * k;
 		solution = temp;
 	}
-
+	
 	public static double[] rotate(int B, int R){
 		double[] tempbox = new double[4];
 		switch(R){
@@ -169,66 +169,39 @@ public class Greedy{
 		for(int i = 1; i < 4; i++){tempbox[i] = tempbox[i] * CommonLargestFactor;}
 		return tempbox;
 	}
-}
-	
-	private static boolean fitcheck(int B, int O, int i, int j, int k){// false = fit, true = can't fit (it makes a earlier part easier)
-		double[] tempbox = new double[4];
-		switch(O){
-		case 0:tempbox[1] = boxes[B][1];
-			tempbox[2] = boxes[B][2];
-			tempbox[3] = boxes[B][3];
-			break;
-		case 1:tempbox[1] = boxes[B][1];
-			tempbox[2] = boxes[B][3];
-			tempbox[3] = boxes[B][2];
-			break;
-		case 2:tempbox[1] = boxes[B][2];
-			tempbox[2] = boxes[B][1];
-			tempbox[3] = boxes[B][3];
-			break;
-		case 3:tempbox[1] = boxes[B][2];
-			tempbox[2] = boxes[B][3];
-			tempbox[3] = boxes[B][1];
-			break;
-		case 4:tempbox[1] = boxes[B][3];
-			tempbox[2] = boxes[B][1];
-			tempbox[3] = boxes[B][2];
-			break;
-		case 5:tempbox[1] = boxes[B][3];
-			tempbox[2] = boxes[B][2];
-			tempbox[3] = boxes[B][1];
-			break;
-		}
-		for(int a = 0; a < tempbox[1]; a++){
-			for(int s = 0; s < tempbox[2]; s++){
-				for(int d = 0; d < tempbox[3]; d++){
-					if((i + a < LargeBox[1]) && (j + s < LargeBox[2]) && (k + d < LargeBox[3])){
-						if (lbox[i + a][j + s][k + d]){return true;}
-					}else{return true;}
-				}
-			}
-		}
-		for(int a = 0; a < tempbox[1]; a++){
-			for(int s = 0; s < tempbox[2]; s++){
-				for(int d = 0; d < tempbox[3]; d++){
-					lbox[i + a][j + s][k + d] = true;
-				}
-			}
-		}
-		AddSolution(B, i, j, k, O);
-		return false;
-	}
-	
-	public static void AddSolution(int B, int i, int j, int k, int R){
-		double[][] temp = new double[solution.length+1][6];
-		for(int a = 0; i< solution.length; i++){for(int s = 1; s < 6; s++){temp[a][s] = solution[a][s];}}
-		temp[solution.length][1] = B;
-		temp[solution.length][2] = R;
-		temp[solution.length][3] = i;
-		temp[solution.length][4] = j;
-		temp[solution.length][5] = k;
-		solution = temp;
-	}
+
+    public static void displayBoxes(){
+        System.out.println(solution.length);
+        for(int i = 0; i<solution.length; i++){
+
+            double thisboxhwl[] = rotate((int)solution[i][0],(int)solution[i][1]);
+
+            double height = thisboxhwl[0];
+            double width = thisboxhwl[1];
+            double depth = thisboxhwl[2];
+
+            double y = solution[i][2];
+            double x = solution[i][3];
+            double z = solution[i][4];
+
+            Color boxcolor;
+            int boxtype = (int)solution[i][0];
+            if(boxtype == 1){
+                boxcolor = Other_Main_Drawer.BOX_BLUE;
+            }
+            else if(boxtype == 2){
+                boxcolor = Other_Main_Drawer.BOX_GREEN;
+            }
+            else if(boxtype == 3){
+                boxcolor = Other_Main_Drawer.BOX_RED;
+            }
+            else{
+                boxcolor = Other_Main_Drawer.BOX_DARK;
+            }
+
+            Other_Main_Drawer.addBox(width,height,depth,x,y,z,boxcolor);
+        }
+    }
 }
 	
 
