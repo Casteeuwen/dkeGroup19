@@ -71,8 +71,8 @@ public class Other_Main_Drawer extends Application {
                 SceneAntialiasing.BALANCED
         );
 
-        camera.setTranslateX(-330);
-        camera.setTranslateY(-300);
+        camera.setTranslateX(-300);
+        camera.setTranslateY(-500);
         scene3d.setCamera(camera);
 
         //try/catch for using a background image. If image doesn't work, it sets background to a default color.
@@ -91,6 +91,7 @@ public class Other_Main_Drawer extends Application {
         createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
 
         myGroup.setDepthTest(DepthTest.ENABLE);
+        myGroup.getTransforms().add(new Rotate(180, CONTAINERW * SIZE_TRANSFORMATION / 2, CONTAINERH/SIZE_TRANSFORMATION/2, CONTAINERD * SIZE_TRANSFORMATION / 2, Rotate.Z_AXIS));
 
         //configure the sliders for rotation of scene
         BorderPane pane = new BorderPane();
@@ -188,6 +189,7 @@ public class Other_Main_Drawer extends Application {
 
         //Configure startbutton & Clear button
         Button startbutton = new Button("START");
+        startbutton.setPrefWidth(TOOLBAR_WIDTH);
         startbutton.setOnAction(new EventHandler<ActionEvent>() {
 
 
@@ -218,6 +220,7 @@ public class Other_Main_Drawer extends Application {
             }
         });
         Button clearbutton = new Button("CLEAR");
+        clearbutton.setPrefWidth(TOOLBAR_WIDTH);
         clearbutton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -245,7 +248,7 @@ public class Other_Main_Drawer extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
-        scene3d.setWidth(stage.getWidth()-TOOLBAR_WIDTH);
+        scene3d.setWidth(stage.getWidth()-TOOLBAR_WIDTH-15);
         scene3d.setHeight(stage.getHeight());
 
         //Configure the pentominoes to have the correct color
@@ -326,7 +329,7 @@ public class Other_Main_Drawer extends Application {
      * TODO add seperate method for each of the boxes (A,B,C), that calls to this one
      */
     public static void addBox(double w, double h, double d, double x, double y, double z,Color boxc) {
-        System.out.println("called: w:"+w+" h "+h+" d "+d+" x "+x+" y "+y);
+        //System.out.println("called: w:"+w+" h "+h+" d "+d+" x "+x+" y "+y);
         //create outline lines of the boxes by calling this method
         createLines(w, h, d, x, y, z);
 

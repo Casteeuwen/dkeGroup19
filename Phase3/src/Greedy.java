@@ -60,7 +60,7 @@ public class Greedy{
 		if(boxinfo[1][1] < boxinfo[1][2]){swap(1,2);}
 		FillInBox();
 		displayBoxes();
-		System.out.println("solution array: ");
+		//System.out.println("solution array: ");
 		for(int i = 0; i<solution.length; i++){
 			System.out.println();
 			for(int j = 0; j<6; j++){

@@ -44,7 +44,7 @@ public class KnapsackProblem {
 
     public static void startKnap(double val1,double val2,double val3) {
 
-        Scanner in = new Scanner(System.in);
+        //Scanner in = new Scanner(System.in);
 
 
 
@@ -69,14 +69,14 @@ public class KnapsackProblem {
 
         KnapsackDP(0); //call to recursive method starting with first item (ITEMS[0][0 or 1])
 
-        System.out.println("The volume (weight) occupied with all selected items is: " + bestWV[0]); //prints weight covered by chosen items
-        System.out.println("Max value: " + bestWV[1]);
-        System.out.print("To obtain this value, the selection of items is the following: ");
+        //System.out.println("The volume (weight) occupied with all selected items is: " + bestWV[0]); //prints weight covered by chosen items
+        //System.out.println("Max value: " + bestWV[1]);
+        //System.out.print("To obtain this value, the selection of items is the following: ");
         for (int i = 0; i < ITEMS.length; i++) {
             if (i == ITEMS.length - 1) { //if i = last item, don't write a comma afterwards (so that it looks like x A, x B, x C)
-                System.out.println(bestInstancesOfItem[i] + " " + itemName[i]); //print best choice for item i, along with its name (both if and else)
+                //System.out.println(bestInstancesOfItem[i] + " " + itemName[i]); //print best choice for item i, along with its name (both if and else)
             } else {
-                System.out.print(bestInstancesOfItem[i] + " " + itemName[i] + ", ");
+                //System.out.print(bestInstancesOfItem[i] + " " + itemName[i] + ", ");
             }
         }
     }
