@@ -3,13 +3,13 @@ import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.*;
@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class Other_Main_Drawer extends Application {
 
     private static final double SCENE_SIZE = 700;
     private static final double SIZE_TRANSFORMATION = 50;
-    private static final double TOOLBAR_HEIGHT = 100;
+    private static final double TOOLBAR_WIDTH = 300;
 
     private static final double CONTAINERW = 2.5;
     private static final double CONTAINERH = 4;
@@ -129,29 +129,124 @@ public class Other_Main_Drawer extends Application {
         });
 
         //configure the checkboxes with listeners
-        CheckBox box1 = new CheckBox("Green");
+        CheckBox box1 = new CheckBox("Show A");
         box1.selectedProperty().addListener(new myBoxListener(BOX_GREEN));
         box1.setSelected(true);
-        CheckBox box2 = new CheckBox("Red");
+        CheckBox box2 = new CheckBox("Show B");
         box2.selectedProperty().addListener(new myBoxListener(BOX_RED));
         box2.selectedProperty().addListener(new myBoxListener(BOX_RED));
         box2.setSelected(true);
-        CheckBox box3 = new CheckBox("Blue");
+        CheckBox box3 = new CheckBox("Show C");
         box3.selectedProperty().addListener(new myBoxListener(BOX_BLUE));
         box3.setSelected(true);
 
+        //Configure the Algorithm Radiobuttons
+        final ToggleGroup group = new ToggleGroup();
+        RadioButton GreedyButton = new RadioButton("Greedy Algorithm");
+        GreedyButton.setToggleGroup(group);
+        GreedyButton.setSelected(true);
+        RadioButton rb2 = new RadioButton("algo2");
+        rb2.setToggleGroup(group);
+
+        //Setup a knapsack yes or no checkbox
+        CheckBox knapyesorno = new CheckBox("Do you want to use a knapsack algorithm?");
+
+        //Configure text elements where you select the amount of each & the values
+        ArrayList<Object> myList = new ArrayList<>();
+        Label parcelA = new Label("Parcel A");
+        myList.add(parcelA);
+        Label amA = new Label("How many parcels of A?");
+        myList.add(amA);
+        TextField amountA = new TextField();
+        myList.add(amountA);
+        Label valA = new Label("What's the value of each parcel of A?");
+        myList.add(valA);
+        TextField valueA = new TextField();
+        myList.add(valueA);
+        Label parcelB = new Label("Parcel B");
+        myList.add(parcelB);
+        Label amB = new Label("How many parcels of B?");
+        myList.add(amB);
+        TextField amountB = new TextField();
+        myList.add(amountB);
+        Label valB = new Label("What's the value of each parcel of B?");
+        myList.add(valB);
+        TextField valueB = new TextField();
+        myList.add(valueB);
+        Label parcelC = new Label("Parcel C");
+        myList.add(parcelC);
+        Label amC = new Label("How many parcels of C?");
+        myList.add(amC);
+        TextField amountC = new TextField();
+        myList.add(amountC);
+        Label valC = new Label("What's the value of each parcel of C?");
+        myList.add(valC);
+        TextField valueC = new TextField();
+        myList.add(valueC);
+
+
+
+        //Configure startbutton & Clear button
+        Button startbutton = new Button("START");
+        startbutton.setOnAction(new EventHandler<ActionEvent>() {
+
+
+            @Override
+            public void handle(ActionEvent event) {
+                int nowamountA = 100000;
+                int nowamountB = 100000;
+                int nowamountC = 100000;
+                double nowvalA = 3;
+                double nowvalB = 4;
+                double nowvalC = 5;
+                try{nowamountA = Integer.parseInt(amountA.getText());}catch(Exception e){}
+                try{nowamountB = Integer.parseInt(amountB.getText());}catch(Exception e){}
+                try{nowamountC = Integer.parseInt(amountC.getText());}catch(Exception e){}
+                try{nowvalA = Double.parseDouble(valueA.getText());}catch(Exception e){}
+                try{nowvalB = Double.parseDouble(valueB.getText());}catch(Exception e){}
+                try{nowvalC = Double.parseDouble(valueC.getText());}catch(Exception e){}
+
+
+                System.out.println("START PRESSED");
+                if(GreedyButton.isSelected()){
+                    myGroup.getChildren().clear();
+                    myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
+                    createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
+                    Greedy.startAlgo(nowvalA,nowvalB,nowvalC,nowamountA,nowamountB,nowamountC,knapyesorno.isSelected());
+
+                }
+            }
+        });
+        Button clearbutton = new Button("CLEAR");
+        clearbutton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("CLEAR PRESSED");
+                myGroup.getChildren().clear();
+                myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
+                createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
+            }
+        });
+
+
+
+
         //Configure and combine the 2d and 3d scene
-        ToolBar toolBar = new ToolBar(slider, slider2,box1,box2,box3);
-        toolBar.setMinHeight(TOOLBAR_HEIGHT);
-        toolBar.setOrientation(Orientation.HORIZONTAL);
-        pane.setTop(toolBar);
-        pane.setPrefSize(800, 800);
+        ToolBar toolBar = new ToolBar(slider,box1,box2,box3,GreedyButton,rb2,startbutton,clearbutton,knapyesorno);
+        for (int i = 0; i< myList.size();i++){
+            Node element = (Node) myList.get(i);
+            toolBar.getItems().add(element);
+        }
+        toolBar.setMinWidth(TOOLBAR_WIDTH);
+        toolBar.setOrientation(Orientation.VERTICAL);
+        pane.setRight(toolBar);
+        pane.setPrefSize(stage.getWidth(), 800);
         scene = new Scene(pane);
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
-        scene3d.setWidth(stage.getWidth());
-        scene3d.setHeight(stage.getHeight()-TOOLBAR_HEIGHT);
+        scene3d.setWidth(stage.getWidth()-TOOLBAR_WIDTH);
+        scene3d.setHeight(stage.getHeight());
 
         //Configure the pentominoes to have the correct color
         PentominoP.setColor(BOX_GREEN);
@@ -168,12 +263,9 @@ public class Other_Main_Drawer extends Application {
         Pentomino pent = new PentominoT(0,0,1,SIZE_TRANSFORMATION);
         Pentomino penf = new PentominoF(0,0,6,SIZE_TRANSFORMATION);
         Pentomino penp = new PentominoP(0,0,3,SIZE_TRANSFORMATION);
-        myGroup.getChildren().addAll(penp,penf,pent);
+        //myGroup.getChildren().addAll(penp,penf,pent);
 
-        addBox(1,2,3,4,5,2,BOX_GREEN);
-
-        Greedy.startAlgo();
-        //Greedy.displayBoxes();
+        //addBox(1,2,3,4,5,2,BOX_GREEN);
     }
 
     /**

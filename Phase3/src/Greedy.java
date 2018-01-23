@@ -14,7 +14,18 @@ public class Greedy{
 	private static double CommonLargestFactor;
 	private static boolean[][][]lbox;
 	private static double[][] solution;
-	public static void startAlgo(){
+	public static void startAlgo(double val1, double val2, double val3, int amount1, int amount2, int amount3, boolean useknap){
+		if(useknap){
+			KnapsackProblem.startKnap(val1,val2,val3);
+			//amount here means maxamount
+			int[] amouteach = KnapsackProblem.getBestAmountEachBox();
+			if (amount1 > amouteach[0]){amount1 = amouteach[0];}
+			if (amount2 > amouteach[1]){amount2 = amouteach[1];}
+			if (amount3 > amouteach[2]){amount3 = amouteach[2];}
+		}
+
+
+
 		solution = new double[0][6];
 		boxes = new double[nob+1][4];
 		LargeBox = new double[4];
@@ -33,9 +44,12 @@ public class Greedy{
 		boxinfo[1][1] = 1 / boxes[1][1] / boxes[1][2] / boxes[1][3];// <<-- Score of Box 1
 		boxinfo[2][1] = 1 / boxes[2][1] / boxes[2][2] / boxes[2][3];// <<-- Score of Box 2
 		boxinfo[3][1] = 1 / boxes[3][1] / boxes[3][2] / boxes[3][3];// <<-- Score of Box 3
-		boxinfo[1][2] = 10;// <<-- Max amount of Box 1
-		boxinfo[2][2] = 10;// <<-- Max amount of Box 2
-		boxinfo[3][2] = 10;// <<-- Max amount of Box 3
+		boxinfo[1][2] = amount1;// <<-- Max amount of Box 1
+		boxinfo[2][2] = amount2;// <<-- Max amount of Box 2
+		boxinfo[3][2] = amount3;// <<-- Max amount of Box 3
+//		boxinfo[1][2] = 10000000;// <<-- Max amount of Box 1
+//		boxinfo[2][2] = 10000000;// <<-- Max amount of Box 2
+//		boxinfo[3][2] = 10000000;// <<-- Max amount of Box 3
 		LargeBox[1] = 4 / CommonLargestFactor;// <-- LargeBox height
 		LargeBox[2] = 2.5 / CommonLargestFactor;// <-- LargeBox width
 		LargeBox[3] = 16.5 / CommonLargestFactor;// <-- LargeBox length
@@ -196,13 +210,13 @@ public class Greedy{
             Color boxcolor;
             int boxtype = (int)solution[i][1];
             if(boxtype == 1){
-                boxcolor = Other_Main_Drawer.BOX_BLUE;
-            }
-            else if(boxtype == 2){
                 boxcolor = Other_Main_Drawer.BOX_GREEN;
             }
-            else if(boxtype == 3){
+            else if(boxtype == 2){
                 boxcolor = Other_Main_Drawer.BOX_RED;
+            }
+            else if(boxtype == 3){
+                boxcolor = Other_Main_Drawer.BOX_BLUE;
             }
             else{
                 boxcolor = Other_Main_Drawer.BOX_DARK;
