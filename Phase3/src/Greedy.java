@@ -46,6 +46,13 @@ public class Greedy{
 		if(boxinfo[1][1] < boxinfo[1][2]){swap(1,2);}
 		FillInBox();
 		displayBoxes();
+		System.out.println("solution array: ");
+		for(int i = 0; i<solution.length; i++){
+			System.out.println();
+			for(int j = 0; j<6; j++){
+				System.out.print(solution[i][j]+"  ");
+			}
+		}
 	}
 	
 	
@@ -128,14 +135,16 @@ public class Greedy{
 	}
 	
 	public static void AddSolution(int B, int i, int j, int k, int R){
+		//System.out.println(B + " "+i+" "+j+" "+k+" "+R);
 		double[][] temp = new double[solution.length+1][6];
-		for(int a = 0; i< solution.length; i++){for(int s = 1; s < 6; s++){temp[a][s] = solution[a][s];}}
+		for(int a = 0; a< solution.length; a++){for(int s = 1; s < 6; s++){temp[a][s] = solution[a][s];}}
 		temp[solution.length][1] = B;
 		temp[solution.length][2] = R;
 		temp[solution.length][3] = CommonLargestFactor * i;
 		temp[solution.length][4] = CommonLargestFactor * j;
 		temp[solution.length][5] = CommonLargestFactor * k;
 		solution = temp;
+		
 	}
 	
 	public static double[] rotate(int B, int R){
@@ -173,19 +182,19 @@ public class Greedy{
     public static void displayBoxes(){
         System.out.println(solution.length);
         for(int i = 0; i<solution.length; i++){
+        	double[] thisboxhwl = new double[4];
+            thisboxhwl = rotate((int)solution[i][1],(int)solution[i][2]);
 
-            double thisboxhwl[] = rotate((int)solution[i][0],(int)solution[i][1]);
+            double height = thisboxhwl[1];
+            double width = thisboxhwl[2];
+            double depth = thisboxhwl[3];
 
-            double height = thisboxhwl[0];
-            double width = thisboxhwl[1];
-            double depth = thisboxhwl[2];
-
-            double y = solution[i][2];
-            double x = solution[i][3];
-            double z = solution[i][4];
+            double y = solution[i][3];
+            double x = solution[i][4];
+            double z = solution[i][5];
 
             Color boxcolor;
-            int boxtype = (int)solution[i][0];
+            int boxtype = (int)solution[i][1];
             if(boxtype == 1){
                 boxcolor = Other_Main_Drawer.BOX_BLUE;
             }
