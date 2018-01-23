@@ -69,7 +69,7 @@ public class Greedy{
 	
 	
 	private static void FillInBox(){
-		for( int u = 1; u < 3; u++){// <<-- Box number
+		for( int u = 1; u < 4; u++){// <<-- Box number
 			for( int i = 0; i < LargeBox[1]; i++){//			}
 				for( int j = 0; j < LargeBox[2]; j++){//		}}selects all cubes in the large box
 					for( int k = 0; k < LargeBox[3]; k++){//	}
