@@ -60,7 +60,7 @@ public abstract class Pentomino extends Group {
     }
 
     /**
-     * Sets the location of all the boxes in the boxarray to the right ones.
+     * Sets the location of all the boxes in the boxarray to the right ones, corresponding to the index in the boxarray grid.
      * Is called when a pentomino is constructed, but also after a rotation.
      */
     public void handleLocations() {

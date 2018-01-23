@@ -40,22 +40,23 @@ public class Other_Main_Drawer extends Application {
     private static final double CONTAINERD = 16.5;
 
     private static final double BOX_OPACITY = 0.5;
-    private static final Color BOX_DARK = Color.rgb(0, 0, 0, 0);
-    private static final Color BOX_GREEN = Color.rgb(0,200,0,BOX_OPACITY);
-    private static final Color BOX_BLUE = Color.rgb(0,0,200,BOX_OPACITY);
-    private static final Color BOX_RED = Color.rgb(200,0,0,BOX_OPACITY);
+    public static final Color BOX_DARK = Color.rgb(0, 0, 0, 0);
+    public static final Color BOX_GREEN = Color.rgb(0,200,0,BOX_OPACITY);
+    public static final Color BOX_BLUE = Color.rgb(0,0,200,BOX_OPACITY);
+    public static final Color BOX_RED = Color.rgb(200,0,0,BOX_OPACITY);
 
 
 
     private static final Color AMBIENT_COLOR = Color.rgb(255, 255, 255);
     private static final Color LIGHT_COLOR = Color.WHITE;
 
-    private PerspectiveCamera camera = new PerspectiveCamera();
+    private static PerspectiveCamera camera = new PerspectiveCamera();
 
-    private Scene scene;
-    private SubScene scene3d;
+    private static Scene scene;
+    private static SubScene scene3d;
 
-    private Group myGroup = new Group(new AmbientLight(AMBIENT_COLOR), createPointLight());
+    //The group where you'll add all javafx3d nodes (objects) in
+    private static Group myGroup = new Group(new AmbientLight(AMBIENT_COLOR), createPointLight());
 
     /**
      * Gets called at beginning of scene, basic javafx function
@@ -76,7 +77,7 @@ public class Other_Main_Drawer extends Application {
 
         //try/catch for using a background image. If image doesn't work, it sets background to a default color.
         try {
-            //add h to ...ttps to get a working image, (rendering is weird so i broke it on purpose)
+            //add "h" to "...ttps" to get a working image, (rendering is weird so i broke it on purpose)
             Image backImg = new Image("ttps://media.istockphoto.com/photos/four-vertical-rows-of-shipping-containers-picture-id515306829?k=6&m=515306829&s=612x612&w=0&h=f-NpL4KEtnd_c1V2ax5IYB3RrTmOB5TCQ-YNQg_OXfQ=");
             ImagePattern pattern = new ImagePattern(backImg);
             scene3d.setFill(pattern);
@@ -131,17 +132,13 @@ public class Other_Main_Drawer extends Application {
         CheckBox box1 = new CheckBox("Green");
         box1.selectedProperty().addListener(new myBoxListener(BOX_GREEN));
         box1.setSelected(true);
-
         CheckBox box2 = new CheckBox("Red");
         box2.selectedProperty().addListener(new myBoxListener(BOX_RED));
         box2.selectedProperty().addListener(new myBoxListener(BOX_RED));
         box2.setSelected(true);
-
         CheckBox box3 = new CheckBox("Blue");
         box3.selectedProperty().addListener(new myBoxListener(BOX_BLUE));
         box3.setSelected(true);
-
-
 
         //Configure and combine the 2d and 3d scene
         ToolBar toolBar = new ToolBar(slider, slider2,box1,box2,box3);
@@ -150,7 +147,6 @@ public class Other_Main_Drawer extends Application {
         pane.setTop(toolBar);
         pane.setPrefSize(800, 800);
         scene = new Scene(pane);
-
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
@@ -169,16 +165,15 @@ public class Other_Main_Drawer extends Application {
 //        addBox(1, 1, 2, 1, 3, 2,BOX_GREEN);
 //        addBox(1, 1, 4, 1.5, 0, 6,BOX_RED);
 
-        Pentomino pent = new PentominoT(0,0,0,SIZE_TRANSFORMATION);
+        Pentomino pent = new PentominoT(0,0,1,SIZE_TRANSFORMATION);
         Pentomino penf = new PentominoF(0,0,6,SIZE_TRANSFORMATION);
         Pentomino penp = new PentominoP(0,0,3,SIZE_TRANSFORMATION);
-        myGroup.getChildren().addAll(pent,penp,penf);
-        //penf.rotateMatrixLeft(4);
-        //penf2.rotateMatrixRight(3);
-        //penf2.rotateMatrixY(1);
-        //penf2.rotateMatrixX(2);
+        myGroup.getChildren().addAll(penp,penf,pent);
 
+        addBox(1,2,3,4,5,2,BOX_GREEN);
 
+        Greedy.startAlgo();
+        //Greedy.displayBoxes();
     }
 
     /**
@@ -219,7 +214,7 @@ public class Other_Main_Drawer extends Application {
      * Makes a pointlight.
      * @return Returns the pointlight.
      */
-    private PointLight createPointLight() {
+    private static PointLight createPointLight() {
         PointLight light = new PointLight(LIGHT_COLOR);
         light.setTranslateX(SCENE_SIZE / 2d);
         light.setTranslateY(0);
@@ -228,7 +223,7 @@ public class Other_Main_Drawer extends Application {
     }
 
     /**
-     * Constructs a colored box with it's corresponding outline
+     * Constructs a colored box with it's corresponding outline, for now the only method you'd call in any other part of the program (excluding the classes for javafx3d obviously)
      * @param w width
      * @param h height
      * @param d depth
@@ -238,7 +233,8 @@ public class Other_Main_Drawer extends Application {
      * @param boxc the color you want the box to be
      * TODO add seperate method for each of the boxes (A,B,C), that calls to this one
      */
-    public void addBox(double w, double h, double d, double x, double y, double z,Color boxc) {
+    public static void addBox(double w, double h, double d, double x, double y, double z,Color boxc) {
+        System.out.println("called: w:"+w+" h "+h+" d "+d+" x "+x+" y "+y);
         //create outline lines of the boxes by calling this method
         createLines(w, h, d, x, y, z);
 
@@ -276,7 +272,7 @@ public class Other_Main_Drawer extends Application {
      * @param y y-location
      * @param z z-location
      */
-    public void createLines(double contW, double contH, double contD, double x, double y, double z) {
+    public static void createLines(double contW, double contH, double contD, double x, double y, double z) {
         x *= SIZE_TRANSFORMATION;
         y *= SIZE_TRANSFORMATION;
         z *= SIZE_TRANSFORMATION;
@@ -288,20 +284,18 @@ public class Other_Main_Drawer extends Application {
         Point3D p2 = new Point3D(contW + x, y, z);
         Point3D p3 = new Point3D(x, contH + y, z);
         Point3D p4 = new Point3D(contW + x, contH + y, z);
-        createLine(p1, p2);
-        createLine(p1, p3);
-        createLine(p3, p4);
-        createLine(p2, p4);
-
         Point3D p5 = new Point3D(x, y, contD + z);
         Point3D p6 = new Point3D(contW + x, y, contD + z);
         Point3D p7 = new Point3D(x, contH + y, contD + z);
         Point3D p8 = new Point3D(contW + x, contH + y, contD + z);
+        createLine(p1, p2);
+        createLine(p1, p3);
+        createLine(p3, p4);
+        createLine(p2, p4);
         createLine(p5, p6);
         createLine(p5, p7);
         createLine(p7, p8);
         createLine(p6, p8);
-
         createLine(p1, p5);
         createLine(p2, p6);
         createLine(p3, p7);
@@ -313,7 +307,7 @@ public class Other_Main_Drawer extends Application {
      * @param origin
      * @param target
      */
-    public void createLine(Point3D origin, Point3D target) {
+    public static void createLine(Point3D origin, Point3D target) {
         Point3D yAxis = new Point3D(0, 1, 0);
         Point3D diff = target.subtract(origin);
         double height = diff.magnitude();

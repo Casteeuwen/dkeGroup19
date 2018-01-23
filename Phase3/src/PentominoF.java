@@ -21,7 +21,7 @@ public class PentominoF extends Pentomino {
     }
 
     /**
-     * Filling the boxgrid (3x3x3 array) with boxes, but only for the location that corresponds to the shape of the pentomino.
+     * Filling the boxgrid (3x3x3 array) with boxes, but only for the locations that corresponds to the shape of the pentomino.
      * This method is only called once, when constructing the pentomino object.
      */
     public void createBeginShape(){
