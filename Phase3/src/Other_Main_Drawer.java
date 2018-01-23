@@ -210,12 +210,14 @@ public class Other_Main_Drawer extends Application {
 
 
                 System.out.println("START PRESSED");
+                myGroup.getChildren().clear();
+                myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
+                createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
                 if(GreedyButton.isSelected()){
-                    myGroup.getChildren().clear();
-                    myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
-                    createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
                     Greedy.startAlgo(nowvalA,nowvalB,nowvalC,nowamountA,nowamountB,nowamountC,knapyesorno.isSelected());
-
+                }
+                if(rb2.isSelected()){
+                    //implement starting of other algorithm
                 }
             }
         });
