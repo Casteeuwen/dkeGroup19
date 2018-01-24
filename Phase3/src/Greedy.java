@@ -17,7 +17,7 @@ public class Greedy{
 	private static double value1;
 	private static double value2;
 	private static double value3;
-
+	
 	public static void startAlgo(double val1, double val2, double val3, int amount1, int amount2, int amount3, boolean useknap){
 		value1 = val1;
 		value2 = val2;
@@ -72,9 +72,24 @@ public class Greedy{
 		LargeBox[3] = 16.5 / CommonLargestFactor;// <-- LargeBox length
 		//FILL IN ABOVE
 		lbox = new boolean[(int)LargeBox[1]][(int)LargeBox[2]][(int)LargeBox[3]];
-		if(boxinfo[1][1] < boxinfo[1][2]){swap(1,2);}
-		if(boxinfo[1][2] < boxinfo[1][2]){swap(2,3);}
-		if(boxinfo[1][1] < boxinfo[1][2]){swap(1,2);}
+		if(boxinfo[1][1] < boxinfo[2][1]){
+			swap(1,2);
+			double te = value1;
+			value1 = value2;
+			value2 = te;
+		}
+		if(boxinfo[2][1] < boxinfo[3][1]){
+			swap(2,3);
+			double te = value3;
+			value3 = value2;
+			value2 = te;
+		}
+		if(boxinfo[1][1] < boxinfo[2][1]){
+			swap(1,2);
+			double te = value1;
+			value1 = value2;
+			value2 = te;
+		}
 		FillInBox();
 		displayBoxes();
 		//System.out.println("solution array: ");
