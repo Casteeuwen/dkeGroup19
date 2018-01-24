@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 public class BruteGreedy{
 	private static double bestscore;
+	private static int Maxtries;
 	private static double[][] bestsolution;
 	private static double[][] boxes;
 	private static double[][] boxinfo;
@@ -17,6 +18,7 @@ public class BruteGreedy{
 	private static boolean[][][]lbox;
 	private static double[][] solution;
 	public static void startAlgo(){
+		Maxtries = 1000;
 		bestsolution = new double[0][6];
 		solution = new double[0][6];
 		boxes = new double[nob+1][4];
@@ -96,7 +98,10 @@ public class BruteGreedy{
 								if(k < LargeBox[3]){k++;}
 							}
 						}
-						FillInBox(B1, B2, B3, i, j, k, score);
+						if(Maxtries > 0){
+							Maxtries--;
+							FillInBox(B1, B2, B3, i, j, k, score);
+						}
 					}else{
 					//Winner stage
 						if(score > bestscore){
