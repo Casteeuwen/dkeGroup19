@@ -211,6 +211,7 @@ public class Greedy{
 	}
 
     public static void displayBoxes(){
+		Other_Main_Drawer.clearScene();
 		double sum = 0;
         //System.out.println(solution.length);
         for(int i = 0; i<solution.length; i++){

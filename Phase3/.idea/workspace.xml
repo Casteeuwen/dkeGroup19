@@ -25,27 +25,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Greedy.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Greedy.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Greedy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="27" column="54" lean-forward="true" selection-start-line="27" selection-start-column="54" selection-end-line="27" selection-end-column="54" />
+            <state relative-caret-position="187">
+              <caret line="213" column="39" lean-forward="true" selection-start-line="213" selection-start-column="39" selection-end-line="213" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Other_Main_Drawer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BruteGreedy.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BruteGreedy.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="222" column="48" lean-forward="true" selection-start-line="222" selection-start-column="48" selection-end-line="222" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Other_Main_Drawer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Other_Main_Drawer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="469">
-              <caret line="221" column="49" lean-forward="true" selection-start-line="221" selection-start-column="49" selection-end-line="221" selection-end-column="49" />
+            <state relative-caret-position="389">
+              <caret line="436" column="35" lean-forward="true" selection-start-line="436" selection-start-column="35" selection-end-line="436" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#11842#11843#0" expanded="true" />
-                <element signature="e#11881#11882#0" expanded="true" />
-                <element signature="e#17212#17213#0" expanded="true" />
-                <element signature="e#17240#17241#0" expanded="true" />
+                <element signature="e#11890#11891#0" expanded="true" />
+                <element signature="e#11929#11930#0" expanded="true" />
+                <element signature="e#17260#17261#0" expanded="true" />
+                <element signature="e#17288#17289#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -71,6 +81,7 @@
       <find>System.ou</find>
       <find>System.out</find>
       <find>score</find>
+      <find>radiobut</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -89,8 +100,9 @@
         <option value="$PROJECT_DIR$/src/PentominoT.java" />
         <option value="F:/Downloads/Greedy.java" />
         <option value="$PROJECT_DIR$/src/KnapsackProblem.java" />
-        <option value="$PROJECT_DIR$/src/Greedy.java" />
+        <option value="$PROJECT_DIR$/src/BruteGreedy.java" />
         <option value="$PROJECT_DIR$/src/Other_Main_Drawer.java" />
+        <option value="$PROJECT_DIR$/src/Greedy.java" />
       </list>
     </option>
   </component>
@@ -415,10 +427,10 @@
           <caret line="415" column="69" lean-forward="true" selection-start-line="414" selection-start-column="58" selection-end-line="415" selection-end-column="69" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11842#11843#0" expanded="true" />
-            <element signature="e#11881#11882#0" expanded="true" />
-            <element signature="e#17212#17213#0" expanded="true" />
-            <element signature="e#17240#17241#0" expanded="true" />
+            <element signature="e#11890#11891#0" expanded="true" />
+            <element signature="e#11929#11930#0" expanded="true" />
+            <element signature="e#17260#17261#0" expanded="true" />
+            <element signature="e#17288#17289#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -429,10 +441,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11842#11843#0" expanded="true" />
-            <element signature="e#11881#11882#0" expanded="true" />
-            <element signature="e#17212#17213#0" expanded="true" />
-            <element signature="e#17240#17241#0" expanded="true" />
+            <element signature="e#11890#11891#0" expanded="true" />
+            <element signature="e#11929#11930#0" expanded="true" />
+            <element signature="e#17260#17261#0" expanded="true" />
+            <element signature="e#17288#17289#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -565,10 +577,10 @@
           <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11842#11843#0" expanded="true" />
-            <element signature="e#11881#11882#0" expanded="true" />
-            <element signature="e#17212#17213#0" expanded="true" />
-            <element signature="e#17240#17241#0" expanded="true" />
+            <element signature="e#11890#11891#0" expanded="true" />
+            <element signature="e#11929#11930#0" expanded="true" />
+            <element signature="e#17260#17261#0" expanded="true" />
+            <element signature="e#17288#17289#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -579,10 +591,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11842#11843#0" expanded="true" />
-            <element signature="e#11881#11882#0" expanded="true" />
-            <element signature="e#17212#17213#0" expanded="true" />
-            <element signature="e#17240#17241#0" expanded="true" />
+            <element signature="e#11890#11891#0" expanded="true" />
+            <element signature="e#11929#11930#0" expanded="true" />
+            <element signature="e#17260#17261#0" expanded="true" />
+            <element signature="e#17288#17289#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -720,25 +732,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Greedy.java">
+    <entry file="file://$PROJECT_DIR$/src/BruteGreedy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="27" column="54" lean-forward="true" selection-start-line="27" selection-start-column="54" selection-end-line="27" selection-end-column="54" />
+        <state relative-caret-position="34">
+          <caret line="222" column="48" lean-forward="true" selection-start-line="222" selection-start-column="48" selection-end-line="222" selection-end-column="48" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Other_Main_Drawer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="221" column="49" lean-forward="true" selection-start-line="221" selection-start-column="49" selection-end-line="221" selection-end-column="49" />
+        <state relative-caret-position="389">
+          <caret line="436" column="35" lean-forward="true" selection-start-line="436" selection-start-column="35" selection-end-line="436" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11842#11843#0" expanded="true" />
-            <element signature="e#11881#11882#0" expanded="true" />
-            <element signature="e#17212#17213#0" expanded="true" />
-            <element signature="e#17240#17241#0" expanded="true" />
+            <element signature="e#11890#11891#0" expanded="true" />
+            <element signature="e#11929#11930#0" expanded="true" />
+            <element signature="e#17260#17261#0" expanded="true" />
+            <element signature="e#17288#17289#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Greedy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="213" column="39" lean-forward="true" selection-start-line="213" selection-start-column="39" selection-end-line="213" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -219,7 +219,8 @@ public class BruteGreedy{
 	}
 
     public static void displayBoxes(){
-        System.out.println(bestsolution.length);
+        Other_Main_Drawer.clearScene();
+		System.out.println(bestsolution.length);
         for(int i = 0; i<bestsolution.length; i++){
         	double[] thisboxhwl = new double[4];
             thisboxhwl = rotate((int)bestsolution[i][1],(int)bestsolution[i][2]);

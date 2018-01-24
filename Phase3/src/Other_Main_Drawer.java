@@ -146,7 +146,7 @@ public class Other_Main_Drawer extends Application {
         RadioButton GreedyButton = new RadioButton("Greedy Algorithm");
         GreedyButton.setToggleGroup(group);
         GreedyButton.setSelected(true);
-        RadioButton rb2 = new RadioButton("algo2");
+        RadioButton rb2 = new RadioButton("BruteGreedy");
         rb2.setToggleGroup(group);
 
         //Setup a knapsack yes or no checkbox
@@ -215,7 +215,8 @@ public class Other_Main_Drawer extends Application {
                     Greedy.startAlgo(nowvalA,nowvalB,nowvalC,nowamountA,nowamountB,nowamountC,knapyesorno.isSelected());
                 }
                 if(rb2.isSelected()){
-                    //implement starting of other algorithm
+                    BruteGreedy.startAlgo();
+                    //Still need to implement the values
                 }
             }
         });
