@@ -210,9 +210,7 @@ public class Other_Main_Drawer extends Application {
 
 
                 System.out.println("START PRESSED");
-                myGroup.getChildren().clear();
-                myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
-                createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
+                clearScene();
                 if(GreedyButton.isSelected()){
                     Greedy.startAlgo(nowvalA,nowvalB,nowvalC,nowamountA,nowamountB,nowamountC,knapyesorno.isSelected());
                 }
@@ -227,9 +225,7 @@ public class Other_Main_Drawer extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("CLEAR PRESSED");
-                myGroup.getChildren().clear();
-                myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
-                createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
+                clearScene();
             }
         });
 
@@ -439,6 +435,12 @@ public class Other_Main_Drawer extends Application {
         mat.diffuseMapProperty();
         mat.setSpecularColor(boxc);
         return mat;
+    }
+
+    public static void clearScene(){
+        myGroup.getChildren().clear();
+        myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
+        createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0);
     }
 
 }
