@@ -3,6 +3,7 @@ import javafx.scene.paint.Color;
 import java.util.Scanner;
 import java.lang.*;
 import javax.swing.*;
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,7 +19,8 @@ public class BruteGreedy{
 	private static boolean[][][]lbox;
 	private static double[][] solution;
 	public static void startAlgo(){
-		Maxtries = 1000;
+		System.out.println("brute called");
+		Maxtries = 10000;
 		bestsolution = new double[0][6];
 		solution = new double[0][6];
 		boxes = new double[nob+1][4];
@@ -224,7 +226,8 @@ public class BruteGreedy{
 	}
 
     public static void displayBoxes(){
-        Other_Main_Drawer.clearScene();
+        System.out.println("displayboxes called");
+		Other_Main_Drawer.clearScene();
 		System.out.println(bestsolution.length);
         for(int i = 0; i<bestsolution.length; i++){
         	double[] thisboxhwl = new double[4];
