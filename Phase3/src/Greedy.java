@@ -14,11 +14,28 @@ public class Greedy{
 	private static double CommonLargestFactor;
 	private static boolean[][][]lbox;
 	private static double[][] solution;
+	private static double value1;
+	private static double value2;
+	private static double value3;
+
 	public static void startAlgo(double val1, double val2, double val3, int amount1, int amount2, int amount3, boolean useknap){
+		value1 = val1;
+		value2 = val2;
+		value3 = val3;
+
 		if(useknap){
+			double knapsum = 0;
 			KnapsackProblem.startKnap(val1,val2,val3);
 			//amount here means maxamount
 			int[] amouteach = KnapsackProblem.getBestAmountEachBox();
+			System.out.println("Knapsack:");
+			for (int i = 0; i<3; i++){
+				System.out.println("You can use " + amouteach[i]+" parcels of type " +(i+1));
+			}
+			knapsum += amouteach[0]*val1;
+			knapsum += amouteach[1]*val2;
+			knapsum += amouteach[2]*val3;
+			System.out.println("The knapsack algorithm gave a maximum value of " + knapsum + ", calculated for an unrestricted amount of each box");
 			if (amount1 > amouteach[0]){amount1 = amouteach[0];}
 			if (amount2 > amouteach[1]){amount2 = amouteach[1];}
 			if (amount3 > amouteach[2]){amount3 = amouteach[2];}
@@ -41,9 +58,9 @@ public class Greedy{
 		boxes[3][1] = 1.5 / CommonLargestFactor;// <-- Box 3 height
 		boxes[3][2] = 1.5 / CommonLargestFactor;// <-- Box 3 width
 		boxes[3][3] = 1.5 / CommonLargestFactor;// <-- Box 3 length
-		boxinfo[1][1] = 1 / boxes[1][1] / boxes[1][2] / boxes[1][3];// <<-- Score of Box 1
-		boxinfo[2][1] = 1 / boxes[2][1] / boxes[2][2] / boxes[2][3];// <<-- Score of Box 2
-		boxinfo[3][1] = 1 / boxes[3][1] / boxes[3][2] / boxes[3][3];// <<-- Score of Box 3
+		boxinfo[1][1] = val1 / boxes[1][1] / boxes[1][2] / boxes[1][3];// <<-- Score of Box 1
+		boxinfo[2][1] = val2 / boxes[2][1] / boxes[2][2] / boxes[2][3];// <<-- Score of Box 2
+		boxinfo[3][1] = val3 / boxes[3][1] / boxes[3][2] / boxes[3][3];// <<-- Score of Box 3
 		boxinfo[1][2] = amount1;// <<-- Max amount of Box 1
 		boxinfo[2][2] = amount2;// <<-- Max amount of Box 2
 		boxinfo[3][2] = amount3;// <<-- Max amount of Box 3
@@ -62,9 +79,9 @@ public class Greedy{
 		displayBoxes();
 		//System.out.println("solution array: ");
 		for(int i = 0; i<solution.length; i++){
-			System.out.println();
+			//System.out.println();
 			for(int j = 0; j<6; j++){
-				System.out.print(solution[i][j]+"  ");
+				//System.out.print(solution[i][j]+"  ");
 			}
 		}
 	}
@@ -194,7 +211,8 @@ public class Greedy{
 	}
 
     public static void displayBoxes(){
-        System.out.println(solution.length);
+		double sum = 0;
+        //System.out.println(solution.length);
         for(int i = 0; i<solution.length; i++){
         	double[] thisboxhwl = new double[4];
             thisboxhwl = rotate((int)solution[i][1],(int)solution[i][2]);
@@ -211,12 +229,15 @@ public class Greedy{
             int boxtype = (int)solution[i][1];
             if(boxtype == 1){
                 boxcolor = Other_Main_Drawer.BOX_GREEN;
+                sum += value1;
             }
             else if(boxtype == 2){
                 boxcolor = Other_Main_Drawer.BOX_RED;
+                sum+= value2;
             }
             else if(boxtype == 3){
                 boxcolor = Other_Main_Drawer.BOX_BLUE;
+                sum+= value3;
             }
             else{
                 boxcolor = Other_Main_Drawer.BOX_DARK;
@@ -224,6 +245,9 @@ public class Greedy{
 
             Other_Main_Drawer.addBox(width,height,depth,x,y,z,boxcolor);
         }
+		System.out.println(" ");
+		System.out.println("Greedy Algorithm result:");
+        System.out.println("Actual value fitted in container: "+sum);
     }
 }
 	

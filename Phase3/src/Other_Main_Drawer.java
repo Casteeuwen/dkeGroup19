@@ -45,7 +45,7 @@ public class Other_Main_Drawer extends Application {
     public static final Color BOX_BLUE = Color.rgb(0,0,200,BOX_OPACITY);
     public static final Color BOX_RED = Color.rgb(200,0,0,BOX_OPACITY);
 
-
+    public static final double LINE_THICCNESS = 0.7;
 
     private static final Color AMBIENT_COLOR = Color.rgb(255, 255, 255);
     private static final Color LIGHT_COLOR = Color.WHITE;
@@ -198,9 +198,9 @@ public class Other_Main_Drawer extends Application {
                 int nowamountA = 100000;
                 int nowamountB = 100000;
                 int nowamountC = 100000;
-                double nowvalA = 3;
-                double nowvalB = 4;
-                double nowvalC = 5;
+                double nowvalA = 0;
+                double nowvalB = 0;
+                double nowvalC = 0;
                 try{nowamountA = Integer.parseInt(amountA.getText());}catch(Exception e){}
                 try{nowamountB = Integer.parseInt(amountB.getText());}catch(Exception e){}
                 try{nowamountC = Integer.parseInt(amountC.getText());}catch(Exception e){}
@@ -265,9 +265,9 @@ public class Other_Main_Drawer extends Application {
 //        addBox(1, 1, 2, 1, 3, 2,BOX_GREEN);
 //        addBox(1, 1, 4, 1.5, 0, 6,BOX_RED);
 
-        Pentomino pent = new PentominoT(0,0,1,SIZE_TRANSFORMATION);
-        Pentomino penf = new PentominoF(0,0,6,SIZE_TRANSFORMATION);
-        Pentomino penp = new PentominoP(0,0,3,SIZE_TRANSFORMATION);
+//        Pentomino pent = new PentominoT(0,0,1,SIZE_TRANSFORMATION);
+//        Pentomino penf = new PentominoF(0,0,6,SIZE_TRANSFORMATION);
+//        Pentomino penp = new PentominoP(0,0,3,SIZE_TRANSFORMATION);
         //myGroup.getChildren().addAll(penp,penf,pent);
 
         //addBox(1,2,3,4,5,2,BOX_GREEN);
@@ -416,7 +416,7 @@ public class Other_Main_Drawer extends Application {
         double angle = Math.acos(diff.normalize().dotProduct(yAxis));
         Rotate rotateAroundCenter = new Rotate(-Math.toDegrees(angle), axisOfRotation);
 
-        Cylinder line = new Cylinder(2, height);
+        Cylinder line = new Cylinder(LINE_THICCNESS, height);
 
         line.getTransforms().addAll(moveToMidpoint, rotateAroundCenter);
 
