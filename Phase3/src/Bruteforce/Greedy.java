@@ -3,6 +3,7 @@ package Bruteforce;
 import UI.Other_Main_Drawer;
 import javafx.scene.paint.Color;
 
+import javax.print.attribute.standard.MediaSize;
 import java.lang.*;
 
 public class Greedy{
@@ -264,6 +265,7 @@ public class Greedy{
 		System.out.println(" ");
 		System.out.println("Bruteforce.Greedy Algorithm result:");
         System.out.println("Actual value fitted in container: "+sum);
+		Other_Main_Drawer.setRealScore(sum);
     }
 }
 	

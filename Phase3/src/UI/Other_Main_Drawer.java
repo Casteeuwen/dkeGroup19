@@ -59,6 +59,7 @@ public class Other_Main_Drawer extends Application {
     static double currentscore;
 
 
+
     //The group where you'll add all javafx3d nodes (objects) in
     private static Group myGroup = new Group(new AmbientLight(AMBIENT_COLOR), createPointLight());
 
@@ -227,11 +228,14 @@ public class Other_Main_Drawer extends Application {
                 try{nowvalB = Double.parseDouble(valueB.getText());}catch(Exception e){}
                 try{nowvalC = Double.parseDouble(valueC.getText());}catch(Exception e){}
 
-                KnapsackProblem.startKnap(nowvalA,nowvalB,nowvalC);
-                int[] knapsolutions = KnapsackProblem.getBestAmountEachBox();
-                double maxknapscore = knapsolutions[0]*nowvalA+knapsolutions[1]*nowvalB+knapsolutions[2]*nowvalC;
-                String solutionString = "a: "+knapsolutions[0]+ " b: "+knapsolutions[1]+" c: "+knapsolutions[2] + " --score: "+ maxknapscore;
-                knapResult.setText(solutionString);
+//                KnapsackProblem.startKnap(nowvalA,nowvalB,nowvalC);
+//                int[] knapsolutions = KnapsackProblem.getBestAmountEachBox();
+//                double maxknapscore = knapsolutions[0]*nowvalA+knapsolutions[1]*nowvalB+knapsolutions[2]*nowvalC;
+//                String solutionString = "a: "+knapsolutions[0]+ " b: "+knapsolutions[1]+" c: "+knapsolutions[2] + " --score: "+ maxknapscore;
+//                knapResult.setText(solutionString);
+
+                UnboundedKnapsack.startUnBounded((int)nowvalA,(int)nowvalB,(int)nowvalC);
+                knapResult.setText(UnboundedKnapsack.getMaxVal()+"--"+UnboundedKnapsack.getOfEach());
 
                 System.out.println("START PRESSED");
                 clearScene();
@@ -239,7 +243,7 @@ public class Other_Main_Drawer extends Application {
                     Greedy.startAlgo(nowvalA,nowvalB,nowvalC,nowamountA,nowamountB,nowamountC);
                 }
                 if(rb2.isSelected()){
-                    BruteGreedy.startAlgo();
+                    //BruteGreedy.startAlgo();
                     //Still need to implement the values
                 }
                 if(ga.isSelected()) {
@@ -371,6 +375,7 @@ public class Other_Main_Drawer extends Application {
     public static void addBox(double w, double h, double d, double x, double y, double z,Color boxc, boolean flag) {
         double volume = w*h*d;
         if (volume == 1*1*2){
+
             boxc = BOX_GREEN;
             currentscore+=nowvalA;
         }if (volume == 1*1.5*2){
@@ -527,6 +532,10 @@ public class Other_Main_Drawer extends Application {
         myGroup.getChildren().clear();
         myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
         createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0, SIZE_TRANSFORMATION);
+    }
+
+    public static void setRealScore(double realscore){
+        currentscore = realscore;
     }
 
 

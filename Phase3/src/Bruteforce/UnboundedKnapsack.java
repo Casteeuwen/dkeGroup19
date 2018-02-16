@@ -4,19 +4,24 @@ import java.text.*;
 
 public class UnboundedKnapsack {
 
-    protected Item [] items = { //array that holds objects of class Bruteforce.Item.
-                               new Item("A", 3, 2.0, 2.0), //
-                               new Item("B", 4, 3.0, 3.0),
-                               new Item("C", 5, 3.375, 3.375)
-                               };
-    protected final int n = items.length; // the number of items
+    protected Item [] items;
+    protected final int n = 3; // the number of items
     protected Item sack = new Item("sack", 0, 165.0, 165.0);
     protected Item best = new Item("best", 0, 0.0, 0.000);
     protected int[] maxItems = new int[n];  // maximum number of items
     protected int[] indexItems = new int[n];  // current indexes of items
     protected int[] bestAmount = new int[n];  // best amounts
+    private static String maxvaluestring ="";
+    private static String ofeachstring ="";
 
-    public UnboundedKnapsack(){
+    public UnboundedKnapsack(int valA, int valB, int valC){
+        Item [] initialItemArray = { //array that holds objects of class Bruteforce.Item.
+                new Item("A", valA, 2.0, 2.0), //
+                new Item("B", valB, 3.0, 3.0),
+                new Item("C", valC, 3.375, 3.375)
+        };
+        items = initialItemArray;
+
         // initializing:
         for (int i = 0; i < n; i++) { // min between (weight of sack / weight of item i) and (volume of sack / volume of item i)
             maxItems[i] = Math.min(
@@ -30,9 +35,11 @@ public class UnboundedKnapsack {
 
         // Print out the solution:
         NumberFormat nf = NumberFormat.getInstance();
+        maxvaluestring = "Maximum value achievable is: " + best.getValue();
         System.out.println("Maximum value achievable is: " + best.getValue());
         System.out.print("This is achieved by carrying (one solution): ");
         for (int i = 0; i < n; i++) {
+            ofeachstring = ofeachstring+bestAmount[i] + " " + items[i].getName() + ", ";
             System.out.print(bestAmount[i] + " " + items[i].getName() + ", ");
         }
         System.out.println();
@@ -93,7 +100,12 @@ public class UnboundedKnapsack {
         } // for (i)
     } // calcWithRecursion()
 
-    public static void main(String[] args){
-        new UnboundedKnapsack(); //create an object of class Bruteforce.UnboundedKnapsack.
+    public static void startUnBounded(int valA,int valB,int valC){
+        ofeachstring ="";
+        maxvaluestring = "";
+        new UnboundedKnapsack(valA,valB,valC); //create an object of class Bruteforce.UnboundedKnapsack.
     }
+
+    public static String getOfEach(){ return ofeachstring;}
+    public static String getMaxVal(){ return maxvaluestring; }
 }
