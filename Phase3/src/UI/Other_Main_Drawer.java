@@ -4,6 +4,7 @@ import GA.Main;
 import Bruteforce.*;
 
 //import com.sun.glass.ui.Size;
+import RandomFill.FillMain;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -249,14 +250,13 @@ public class Other_Main_Drawer extends Application {
                 if(ga.isSelected()) {
                     try {
                         Main.startAlgo(nowvalA, nowvalB, nowvalC, nowamountA, nowamountB,nowamountC);
-                        setRealScore(Main.getmaxxx());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 if(rf.isSelected()) {
                     try {
-                        Main.startRandomFill();
+                        FillMain.startRandomFill();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
