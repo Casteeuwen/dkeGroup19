@@ -10,18 +10,19 @@ import java.util.ArrayList;
  */
 public class Main {
 
-    public static final int ITERATIONS = 5;
+    public static final int ITERATIONS = 30;
     public static final int NUMBER_OF_ELITES = 20;
-    public static final double CROSSOVER_PROBABILITY = 0.8;
-    public static final double MUTATION_PROBABILITY = 0.6;
+    public static final double CROSSOVER_PROBABILITY = 0.7;
+    public static final double MUTATION_PROBABILITY = 0.5;
 
 
-    public static void main(String[] args) { }
+    public static void main(String[] args) throws Exception { }
+
 
     /**
      * Start filling the container with randomly chosen boxes
      */
-    public static void startRandomFill() {
+    public static void startRandomFill() throws Exception {
         Logic logic = new Logic();
         Cargo cargo = logic.fillRandomly();
         displayBoxes(cargo);
@@ -30,7 +31,7 @@ public class Main {
     /**
      * Start the genetic algorithm
      */
-    public static void startAlgo() {
+    public static void startAlgo(double valA, double valB, double valC, int nrA, int nrB, int nrC) throws Exception {
         Logic logic = new Logic();
 
         ArrayList<Cargo> cargos = new ArrayList<>();
@@ -39,14 +40,14 @@ public class Main {
 
         // Generate boxes to be send to the algorithm
         ArrayList<Box> boxes = new ArrayList<>();
-        for (int i = 0; i < 70; i++) {
-            boxes.add(new Box(10, 10, 20, 3, "A"));
+        for (int i = 0; i < nrA; i++) {
+            boxes.add(new Box(1.0, 1.0, 2.0, valA, "A"));
         }
-//        for (int i = 0; i < 60; i++) {
-//            boxes.add(new Box(10, 15, 20, 4, "B"));
-//        }
-        for (int i = 0; i < 10; i++) {
-            boxes.add(new Box(15, 15, 15, 5, "C"));
+        for (int i = 0; i < nrB; i++) {
+            boxes.add(new Box(1.0, 1.5, 2.0, valB, "B"));
+        }
+        for (int i = 0; i < nrC; i++) {
+            boxes.add(new Box(1.5, 1.5, 1.5, valC, "C"));
         }
 
         // Load boxes into genetic algorithm
@@ -56,6 +57,7 @@ public class Main {
         Chromosome[] population = ga.getPopulation().getChromosomes();
 
         int populationSize = population.length;
+//        int populationSize = 1;
 
         double[] fitnessValues = new double[boxes.size()];
 
@@ -66,23 +68,21 @@ public class Main {
             fitnessOfElites[i] = 1;
         }
 
+        Cargo cargo;
+
         for (int i = 0; i < ITERATIONS; i++) {
             System.out.println("Iteration " + i);
 
             // Start packing
             for (int j = 0; j < populationSize; j++) {
 //                System.out.println("Chromosome: " + j + " of " + populationSize);
-                try {
-                    Cargo cargo = logic.packBoxes(boxes, population[j].getGenes());
+                    cargo = logic.packBoxes(boxes, population[j].getGenes());
                     fitnessValues[j] = logic.calculateFitness(cargo);
 //                    System.out.println(cargo);
                     if (cargo.getTotalValue() > max) {
                         max = cargo.getTotalValue();
                     }
                     cargos.add(cargo);
-                } catch (NullPointerException e) {
-
-                }
             }
 
 //            System.out.println("Fitness values after packing: " + Arrays.toString(fitnessValues));
@@ -156,18 +156,21 @@ public class Main {
         System.out.println("Maximum value:" + max);
         for (Cargo c : cargos) {
             if (c.getTotalValue() == max) {
-                displayBoxes(c);
+//                System.out.println(c);
+//                System.out.println(c.getBoxesInfo());
                 displayBoxes(c);
             }
+
         }
     }
 
     /**
      * Displays the boxes on the GUI
      * @param cargo
-     */public static void displayBoxes(Cargo cargo){
+     */
+    public static void displayBoxes(Cargo cargo){
         Other_Main_Drawer.clearScene();
-        for (Box b : cargo.getBoxes1()) {
+        for (Box b : cargo.getBoxes()) {
             Color boxColor;
 
             if (b.getName() == "A") {
@@ -180,7 +183,7 @@ public class Main {
                 boxColor = Other_Main_Drawer.BOX_DARK;
             }
 
-            Other_Main_Drawer.addBox(b.getWidth(), b.getHeight(), b.getLength(), b.getCoords()[2], b.getCoords()[1], b.getCoords()[0], boxColor, false);
+            Other_Main_Drawer.addBox(b.getWidth(), b.getHeight(), b.getLength(), b.getOrigin()[2], b.getOrigin()[1], b.getOrigin()[0], boxColor, true);
         }
     }
 

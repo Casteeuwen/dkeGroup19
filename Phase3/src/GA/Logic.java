@@ -1,39 +1,20 @@
 package GA;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
-/**
- * Packing methodologies
- */
 public class Logic {
-    private Random random;
-    private Box A, B, C;
-    private ArrayList<Box> boxes;
-    private EMS ems;
-    private GeneticAlgorithm ga;
 
     public Logic() {
-        random = new Random();
-        A = new Box(10, 10, 20, 3, "A");
-        B = new Box(10, 15, 20, 4, "B");
-        C = new Box(15, 15, 15, 5, "C");
-        boxes = new ArrayList<>();
-        boxes.add(A);
-        boxes.add(B);
-        boxes.add(C);
-        ems = new EMS();
+
     }
 
-    /**
-     * Attempt to pack boxes in the container
-     * @param boxes list of boxes
-     * @param bps 'box packing sequence' - randomized sequence of boxes to be packed
-     * @return a filled container
-     */
-    public Cargo packBoxes(ArrayList<Box> boxes, int[] bps) {
-        Cargo cargo = new Cargo(165, 40, 25);
+    public Cargo packBoxes(ArrayList<Box> boxes, int[] bps) throws Exception {
+        Cargo cargo = new Cargo(16.5, 4.0, 2.5);
         boolean[] packedBoxes = new boolean[boxes.size()];
+
+
         for (int i = 0; i < packedBoxes.length; i++) {
             packedBoxes[i] = false;
         }
@@ -42,22 +23,48 @@ public class Logic {
             int boxIndex = bps[i];
 
             if (!packedBoxes[boxIndex]) {
+                ArrayList<EMS> tmpEMS = new ArrayList<>();
                 Box curBox = boxes.get(boxIndex);
-                ArrayList<EMS> curEMS = ems.createEMS(cargo, curBox);
+
+                //System.out.println("index " + i);
+                //System.out.println("\n[*] Current box: " + curBox);
+
+                ArrayList<EMS> curEMS = cargo.getEms();
+
+                //System.out.println("[*] Current EMS list: ");
+                for (EMS e : curEMS) {
+                    //System.out.println(" -> " + e);
+                }
+                //System.out.println();
+
+                cargo.calculateDistanceToOrigin(curEMS);
                 Collections.sort(curEMS);
 
+                //System.out.println("[*] Sorted EMS list:");
+                for (EMS e : curEMS) {
+                    //System.out.println(" -> " + e);
+                }
+                //System.out.println();
+
+                for (EMS e : curEMS) {
+                    tmpEMS.add(e);
+                }
+
                 for (EMS ems : curEMS) {
+
                     if (checkIfBoxFitsInEMS(curBox, ems)) {
                         curBox = getBestRotation(curBox, ems);
-                        try {
-                           cargo.addBox(curBox);
-                        } catch (Exception e) {
 
-                        }
+                        //System.out.println("Best rotation: " + curBox);
+                        curBox.setOrigin(ems.getOrigin());
+                        //System.out.println("Box's new origin: " + Arrays.toString(curBox.getOrigin()));
+                        cargo.update(tmpEMS, curBox);
+                        cargo.addBox(curBox);
                         packedBoxes[boxIndex] = true;
                         break;
                     }
                 }
+
 
             }
         }
@@ -71,10 +78,10 @@ public class Logic {
      */
     public double calculateFitness(Cargo cargo) {
         double boxVolume = 0;
-        for (Box b : cargo.getBoxes().keySet()) {
-            boxVolume += b.getVolume() * cargo.getBoxes().get(b);
+        for (Box b : cargo.getBoxes()) {
+            boxVolume += b.getVolume();
         }
-        return 1 - boxVolume / cargo.getVolume();
+        return 1 - (boxVolume / cargo.getVolume());
     }
 
     /**
@@ -84,7 +91,7 @@ public class Logic {
      * @return True/False
      */
     public boolean checkIfBoxFitsInEMS(Box box, EMS ems) {
-        int[][] rotations = box.getRotations();
+        double[][] rotations = box.getRotations();
         for (int i = 0; i < rotations.length; i++) {
             box.setHeight(rotations[i][0]);
             box.setLength(rotations[i][1]);
@@ -92,9 +99,11 @@ public class Logic {
             if (box.getLength() <= ems.getLength() &&
                     box.getHeight() <= ems.getHeight() &&
                     box.getWidth() <= ems.getWidth()) {
+                //System.out.println(" - Box fits in EMS");
                 return true;
             }
         }
+        //System.out.println(" - Box doesn't fit in EMS");
         return false;
     }
 
@@ -105,8 +114,8 @@ public class Logic {
      * @return a box in its best rotation
      */
     public Box getBestRotation(Box box, EMS ems) {
-        int[] bestRotation = new int[3];
-        int[][] rotations = box.getRotations();
+        double[] bestRotation = new double[3];
+        double[][] rotations = box.getRotations();
 
         for (int i = 0; i < rotations.length; i++) {
             bestRotation[0] = rotations[i][0];
@@ -120,9 +129,9 @@ public class Logic {
             if (box.getLength() <= ems.getLength() &&
                     box.getHeight() <= ems.getHeight() &&
                     box.getWidth() <= ems.getWidth()) {
-                int lengthMargin = ems.getLength() - box.getLength();
-                int heightMargin = ems.getHeight() - box.getHeight();
-                int widthMargin = ems.getWidth() - box.getWidth();
+                double lengthMargin = ems.getLength() - box.getLength();
+                double heightMargin = ems.getHeight() - box.getHeight();
+                double widthMargin = ems.getWidth() - box.getWidth();
 
                 if (bestRotation[0] < lengthMargin || bestRotation[1] < heightMargin || bestRotation[2] < widthMargin ) {
                     bestRotation[0] = rotations[i][0];
@@ -139,23 +148,20 @@ public class Logic {
         return box;
     }
 
-    /**
-     * Fills the cargo with boxes based on RNG
-     * @return a randomly packed container
-     */
-    public Cargo fillRandomly() {
+    public Cargo fillRandomly() throws Exception {
+        Random random = new Random();
         Box box = null;
-        Cargo cargo = new Cargo(165, 40, 25);
+        Cargo cargo = new Cargo(16.5, 4.0, 2.5);
         while (true) {
             switch(random.nextInt(3)) {
                 case 0:
-                    box = new Box(10, 10, 20, 3, "A");
+                    box = new Box(1.0, 1.0, 2.0, 3, "A");
                     break;
                 case 1:
-                    box = new Box(10, 15, 20, 4, "B");
+                    box = new Box(1.0, 1.5, 2.0, 4, "B");
                     break;
                 case 2:
-                    box = new Box(15, 15, 15, 5, "C");
+                    box = new Box(1.5, 1.5, 1.5, 5, "C");
                     break;
                 default:
                     break;

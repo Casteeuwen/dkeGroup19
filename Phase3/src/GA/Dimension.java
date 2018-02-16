@@ -1,58 +1,55 @@
 package GA;
+import java.util.Arrays;
 
-/**
- * The core of all the objects to be used (i.e. Box, Cargo, Space)
- */
 public class Dimension {
-    private int length, width, height, volume;
-    private int[] coords;
+    private double[] origin;
+    private double length, height, width;
 
-    /**
-     * Constructor
-     * @param length length of dimension
-     * @param height height of dimension
-     * @param width width of dimension
-     */
-    public Dimension(int length, int height, int width) {
-        this.length = length;
-        this.width = width;
-        this.height = height;
-        volume = length * width * height;
+    public Dimension(double[] origin, double length, double height, double width) throws Exception {
+//        if (length < 0 || height < 0 || width < 0) {
+//            throw new Exception("Negative parameter for cargo dimensions!");
+//        } else {
+            this.length = length;
+            this.height = height;
+            this.width = width;
+//        }
+        this.origin = origin;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getVolume() {
-        return volume;
+    public double[] getOrigin() {
+        return origin;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public void setCoords(int[] coords) {
-        this.coords = coords;
+    public void setLength(double length) {
+        this.length = length;
     }
 
-    public int[] getCoords() {
-        return coords;
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setOrigin(double[] origin) {
+        this.origin = origin;
+    }
+
+    @Override
+    public String toString() {
+        return "origin: " + Arrays.toString(getOrigin()) + " length: " + getLength() + " height: " + getHeight() + " width: " + getWidth();
     }
 }

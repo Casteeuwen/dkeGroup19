@@ -57,10 +57,10 @@ public class Population {
 
         for (int i = 0; i < boxes.size(); i++) {
 
-            lengthArray[i] = boxes.get(i).getLength();
-            heightArray[i] = boxes.get(i).getHeight();
-            widthArray[i] = boxes.get(i).getWidth();
-            volumeArray[i] = boxes.get(i).getVolume();
+//            lengthArray[i] = boxes.get(i).getLength();
+//            heightArray[i] = boxes.get(i).getHeight();
+//            widthArray[i] = boxes.get(i).getWidth();
+//            volumeArray[i] = boxes.get(i).getVolume();
         }
 
         Arrays.sort(lengthArray);

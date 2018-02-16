@@ -1,80 +1,43 @@
 package GA;
+import java.util.Arrays;
 
-/**
- * A box that's going to be added to the container
- */
-public class Box extends Space implements Cloneable, Comparable<Box> {
-    private int value;
-    private double density;
+public class Box {
+    private double[] origin;
+    private double length, height, width, value, volume;
     private String name;
 
-    /**
-     * Constructor
-     * @param length length of the box
-     * @param height height of the box
-     * @param width width of the box
-     * @param value value of the box
-     * @param name name of the box
-     */
-    public Box(int length, int height, int width, int value, String name) {
-        super(length, height, width);
-        this.value = value;
-        this.name = name;
-        density = value / getVolume();
-    }
 
-    /**
-     * Get all possible rotations of the box
-     * @return
-     */
-    public int[][] getRotations() {
-        int[][] rotations = new int[6][3];
-        rotations[0] = new int[]{getLength(), getHeight(), getWidth()};
-        rotations[1] = new int[]{getLength(), getWidth(), getHeight()};
-        rotations[2] = new int[]{getWidth(), getHeight(), getLength()};
-        rotations[3] = new int[]{getWidth(), getLength(), getHeight()};
-        rotations[4] = new int[]{getHeight(), getWidth(), getLength()};
-        rotations[5] = new int[]{getHeight(), getLength(), getWidth()};
-        return rotations;
-    }
-
-    public boolean equals(Object object) {
-        if (object == null) {
-            return false;
+    public Box(double length, double height, double width, double value, String name) throws Exception {
+        if (length < 0 || height < 0 || width < 0) {
+            throw new Exception("Negative parameter for box dimensions!");
+        } else {
+            this.length = length;
+            this.height = height;
+            this.width = width;
+            this.value = value;
+            this.name = name;
+            volume = length * height * width;
         }
-
-        if (getClass() != object.getClass()) {
-            return false;
-        }
-
-        Box compared = (Box) object;
-
-        if (value != compared.getValue() ||
-                name == null ||
-                !name.equals(compared.getName()) ||
-                density != compared.getDensity() ||
-                getHeight() != compared.getHeight() ||
-                getLength() != compared.getLength() ||
-                getWidth() != compared.getWidth()) {
-            return false;
-        }
-
-        return true;
+        origin = new double[]{0 ,0 ,0};
     }
 
-    public int hashCode() {
-        if (name == null) {
-            return -1;
-        }
-
-        return getLength() + getWidth() + getHeight() + name.hashCode() + value;
+    public double[] getOrigin() {
+        return origin;
     }
 
-    public Box clone() {
-        return new Box (getLength(), getWidth(), getHeight(), value, name);
+    public double getWidth() {
+        return width;
     }
 
-    public int getValue() {
+    public double getLength() {
+        return length;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getValue() {
         return value;
     }
 
@@ -82,23 +45,39 @@ public class Box extends Space implements Cloneable, Comparable<Box> {
         return name;
     }
 
-    public double getDensity() {
-        return density;
+    public double getVolume() {
+        return volume;
+    }
+
+    public double[][] getRotations() {
+        double[][] rotations = new double[6][3];
+        rotations[0] = new double[]{getLength(), getHeight(), getWidth()};
+        rotations[1] = new double[]{getLength(), getWidth(), getHeight()};
+        rotations[2] = new double[]{getWidth(), getHeight(), getLength()};
+        rotations[3] = new double[]{getWidth(), getLength(), getHeight()};
+        rotations[4] = new double[]{getHeight(), getWidth(), getLength()};
+        rotations[5] = new double[]{getHeight(), getLength(), getWidth()};
+        return rotations;
     }
 
     @Override
     public String toString() {
-        return "Box " + name;
+        return name + " - origin: " + Arrays.toString(origin) + " length: " + length + " height: " + height + " width: " + width;
     }
 
-    @Override
-    public int compareTo(Box other) {
-        if (density == other.density) {
-            return 0;
-        } else if (density > other.density) {
-            return 1;
-        } else {
-            return -1;
-        }
+    public void setOrigin(double[] origin) {
+        this.origin = origin;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
     }
 }
