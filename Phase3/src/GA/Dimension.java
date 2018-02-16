@@ -1,6 +1,9 @@
 package GA;
 import java.util.Arrays;
 
+/**
+ * Superclass of Cargo and EMS classes, contains the origin, length, height and width of object of those classes
+ */
 public class Dimension {
     private double[] origin;
     private double length, height, width;

@@ -9,9 +9,8 @@ import java.util.ArrayList;
  * Tester class for the genetic & random filling algorithms
  */
 public class Main {
-    private static int max =0;
 
-    public static final int ITERATIONS = 30;
+    public static final int ITERATIONS = 20;
     public static final int NUMBER_OF_ELITES = 20;
     public static final double CROSSOVER_PROBABILITY = 0.7;
     public static final double MUTATION_PROBABILITY = 0.5;
@@ -21,22 +20,18 @@ public class Main {
 
 
     /**
-     * Start filling the container with randomly chosen boxes
-     */
-    public static void startRandomFill() throws Exception {
-        Logic logic = new Logic();
-        Cargo cargo = logic.fillRandomly();
-        displayBoxes(cargo);
-    }
-
-    /**
      * Start the genetic algorithm
      */
     public static void startAlgo(double valA, double valB, double valC, int nrA, int nrB, int nrC) throws Exception {
+        if (nrA == 100000) {nrA = 80; valA = 3;}
+        if (nrB == 100000) {nrB = 0; valB = 4;}
+        if (nrC == 100000) {nrC = 0; valC = 5;}
+
+
         Logic logic = new Logic();
 
         ArrayList<Cargo> cargos = new ArrayList<>();
-        max = 0;
+        int max = 0;
 
 
         // Generate boxes to be send to the algorithm
@@ -154,7 +149,6 @@ public class Main {
         }
 
         // Get the best solution from all
-        Other_Main_Drawer.setRealScore(max);
         System.out.println("Maximum value:" + max);
         for (Cargo c : cargos) {
             if (c.getTotalValue() == max) {
@@ -171,8 +165,6 @@ public class Main {
      * @param cargo
      */
     public static void displayBoxes(Cargo cargo){
-
-        Other_Main_Drawer.setRealScore(max);
         Other_Main_Drawer.clearScene();
         for (Box b : cargo.getBoxes()) {
             Color boxColor;
@@ -190,7 +182,5 @@ public class Main {
             Other_Main_Drawer.addBox(b.getWidth(), b.getHeight(), b.getLength(), b.getOrigin()[2], b.getOrigin()[1], b.getOrigin()[0], boxColor, true);
         }
     }
-
-    public static int getmaxxx(){return max;}
 
 }

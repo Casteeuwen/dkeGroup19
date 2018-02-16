@@ -1,4 +1,8 @@
 package GA;
+
+/**
+ * Class representing the Empty Maximum Space
+ */
 public class EMS extends Dimension implements Comparable<EMS> {
     private double distance;
 
@@ -12,6 +16,11 @@ public class EMS extends Dimension implements Comparable<EMS> {
         return "EMS " + super.toString();
     }
 
+    /**
+     * Comparator used to sort the EMS by distance to origin
+     * @param other
+     * @return
+     */
     @Override
     public int compareTo(EMS other) {
         if (distance == other.getDistance()) {

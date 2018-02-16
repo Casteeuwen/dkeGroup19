@@ -1,6 +1,9 @@
 package GA;
 import java.util.Arrays;
 
+/**
+ * Class that represents a box, which will further be added to the container
+ */
 public class Box {
     private double[] origin;
     private double length, height, width, value, volume;

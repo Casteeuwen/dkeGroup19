@@ -1,15 +1,22 @@
 package GA;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Random;
 
+/**
+ * Packing methodologies
+ */
 public class Logic {
 
     public Logic() {
 
     }
 
+    /**
+     * Attempt to pack boxes in the container
+     * @param boxes list of boxes
+     * @param bps 'box packing sequence' - randomized sequence of boxes to be packed
+     * @return a filled container
+     */
     public Cargo packBoxes(ArrayList<Box> boxes, int[] bps) throws Exception {
         Cargo cargo = new Cargo(16.5, 4.0, 2.5);
         boolean[] packedBoxes = new boolean[boxes.size()];
@@ -148,30 +155,4 @@ public class Logic {
         return box;
     }
 
-    public Cargo fillRandomly() throws Exception {
-        Random random = new Random();
-        Box box = null;
-        Cargo cargo = new Cargo(16.5, 4.0, 2.5);
-        while (true) {
-            switch(random.nextInt(3)) {
-                case 0:
-                    box = new Box(1.0, 1.0, 2.0, 3, "A");
-                    break;
-                case 1:
-                    box = new Box(1.0, 1.5, 2.0, 4, "B");
-                    break;
-                case 2:
-                    box = new Box(1.5, 1.5, 1.5, 5, "C");
-                    break;
-                default:
-                    break;
-            }
-            try {
-                cargo.addBox(box);
-            } catch (Exception e) {
-                break;
-            }
-        }
-        return cargo;
-    }
 }

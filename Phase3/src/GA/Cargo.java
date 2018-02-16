@@ -2,12 +2,21 @@ package GA;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Class representing the container
+ */
 public class Cargo extends Dimension {
     private ArrayList<EMS> ems;
     private ArrayList<Box> boxes;
     private int totalValue;
     private double volume;
 
+    /**
+     * Constructor
+     * @param length length of container
+     * @param height height of container
+     * @param width width of container
+     */
     public Cargo(double length, double height, double width) throws Exception {
         super(new double[]{0, 0, 0}, length, height, width);
         ems = new ArrayList<>();
@@ -17,12 +26,23 @@ public class Cargo extends Dimension {
         volume = length * height * width;
     }
 
+    /**
+     * Adds a box to the container
+     * @param box box to be added
+     * @throws Exception
+     */
     public void addBox(Box box) {
         boxes.add(box);
         ////System.out.println("Box " + box + " added");
         totalValue += box.getValue();
     }
 
+    /**
+     * Create an Empty Maximum Space
+     * @param cargo container
+     * @param box box
+     * @return a list of all possible EMS for the given box
+     */
     public ArrayList<EMS> createEMS(Dimension cargo, Box box) throws Exception {
         ////System.out.println("[*] Starting EMS creation process");
         ArrayList<EMS> newEms = new ArrayList<>();
@@ -67,6 +87,12 @@ public class Cargo extends Dimension {
         return newEms;
     }
 
+    /**
+     * Check whether the box goes outside the container
+     * @param cargo container
+     * @param box box to be checked
+     * @return True/False
+     */
     public boolean isBoxOutside(Dimension cargo, Box box) {
         //System.out.print("[*] Checking whether the box is outside ... ");
         double[] vertex1 = cargo.getOrigin();
@@ -94,6 +120,12 @@ public class Cargo extends Dimension {
         return false;
     }
 
+    /**
+     * Check whether the EMS overlaps with other EMSs
+     * @param ems1 original EMS
+     * @param ems2 EMS to be compared
+     * @return True/False
+     */
     public boolean isEMSInAnotherEMS(EMS ems1, EMS ems2) {
 //        //System.out.print("\n[*] Checking whether there are any EMS inside other EMS ... ");
         boolean[] check = new boolean[3];
@@ -106,58 +138,25 @@ public class Cargo extends Dimension {
         ////System.out.println("ems2: " + ems2 + " vertex2 " + Arrays.toString(ems2_vertex1) + "    vertex2 " + Arrays.toString(ems2_vertex2));
         ////System.out.println();
 
-//        if (ems1.getLength() <= ems2.getLength() && ems1.getHeight() <= ems2.getHeight() && ems1.getWidth() <= ems2.getWidth()) {
-//            return true;
-//        }
-//        return false;
-
-//         if (ems1_vertex1[0] >= ems2_vertex1[0] && ems1_vertex1[1] >= ems2_vertex1[1] && ems1_vertex1[2] >= ems2_vertex1[2]) {
-//             boo = false;
-//         }
-
          boolean firstCheck = ems1_vertex1[0] >= ems2_vertex1[0] && ems1_vertex1[1] >= ems2_vertex1[1] && ems1_vertex1[2] >= ems2_vertex1[2];
          boolean secondCheck = ems1_vertex2[0] <= ems2_vertex2[0] && ems1_vertex2[1] <= ems2_vertex2[1] && ems1_vertex2[2] <= ems2_vertex2[2];
-//         if (ems1_vertex2[0] <= ems2_vertex2[0] && ems1_vertex2[1] <= ems2_vertex2[1] && ems1_vertex2[2] <= ems2_vertex2[2]) {
-//            boo = false;
-//         }
-
-
-//        int j = 0;
-//        for (int i = 0; i < ems1_vertex1.length; i++) {
-//            if (ems1_vertex1[i] <= ems2_vertex1[i] && ems1_vertex2[i] >= ems2_vertex2[i]) {
-////                ////System.out.println("no");
-//                return false;
-//            }
-
-//            if (ems1_vertex1[i] >= ems2_vertex1[i]) {
-//                check[j] = true;
-//            } else {
-//                check[j] = false;
-//            }
-//            j++;
-//            if (ems1_vertex2[i] <= ems2_vertex2[i]) {
-//                check[i] = true;
-//            } else {
-//                check[i] = false;
-//            }
-//            j++;
-//        }
 
 //        ////System.out.println("yes");
-//        for (int i = 0; i < check.length; i++) {
-//            if (!check[i]) {
-//                return false;
-//            }
-//        }
-//        return true;
         return firstCheck && secondCheck;
     }
 
+    /**
+     * Updates the Empty Maximum Spaces after a box has been placed in the container
+     * @param emsToUpdate
+     * @param box
+     * @throws Exception
+     */
     public void update(ArrayList<EMS> emsToUpdate, Box box) throws Exception {
         ////System.out.println("[*] Starting update process");
         ems = new ArrayList<>();
         ArrayList<EMS> newEMS = new ArrayList<>();
         ArrayList<Integer> indexesToRemove = new ArrayList<>();
+        int[] toRemove = new int[emsToUpdate.size()];
 
 
         for (EMS e : emsToUpdate) {
@@ -174,13 +173,15 @@ public class Cargo extends Dimension {
 
             if (!tmpEMS.isEmpty() || isBoxEqualToEMS(box, e)) {
 
-                indexesToRemove.add(i);
+//                indexesToRemove.add(i);
+                toRemove[i] = emsToUpdate.indexOf(e);
 
                 for (EMS e2 : tmpEMS) {
                     newEMS.add(e2);
                 }
 
-//                newEMS = tmpEMS;
+            } else {
+                toRemove[i] = -1;
             }
             i++;
         }
@@ -189,21 +190,24 @@ public class Cargo extends Dimension {
             ////System.out.println(e2);
         }
 
-        if (!indexesToRemove.isEmpty()) {
-            for (Integer j : indexesToRemove) {
-                ////System.out.println("----> Removing " + newEMS.get(j));
-                newEMS.remove(newEMS.get(j));
-//                newEMS.remove(j);
+        for (int j = 0; j < toRemove.length; j++) {
+            if (toRemove[j] != -1) {
+                newEMS.remove(toRemove[j]);
             }
         }
+
+//        if (!indexesToRemove.isEmpty()) {
+//            for (Integer j : indexesToRemove) {
+//                ////System.out.println("----> Removing " + newEMS.get(j));
+//                newEMS.remove(newEMS.get(j));
+////                newEMS.remove(j);
+//            }
+//        }
         ////System.out.println("\nPreclean EMS2 : ");
-        for (EMS e2 : newEMS) {
-            ////System.out.println(e2);
-        }
+//        for (EMS e2 : newEMS) {
+//            ////System.out.println(e2);
+//        }
 
-
-
-//        removeEMS(newEMS);
         ems = removeEMS(newEMS);
 
 //        for (EMS e : newEMS) {
@@ -211,13 +215,16 @@ public class Cargo extends Dimension {
 //        }
 //        ems = removeEMS(newEMS);
         ////System.out.println("\nFinal EMS: ");
-        for (EMS e2 : ems) {
-            ////System.out.println(e2);
-        }
+//        for (EMS e2 : ems) {
+//            ////System.out.println(e2);
+//        }
 //        return newEMS;
     }
 
 
+    /**
+     * Removes overlapping EMSs
+     */
     public ArrayList<EMS> removeEMS(ArrayList<EMS> input) {
         ////System.out.println("[*] Cleaning EMS after update ");
         ArrayList<EMS> toRemove = new ArrayList<>();
@@ -253,6 +260,12 @@ public class Cargo extends Dimension {
         return input;
     }
 
+    /**
+     * Check whether the size of the box is equal to the size of EMS
+     * @param box
+     * @param ems
+     * @return True/False
+     */
     public boolean isBoxEqualToEMS(Box box, EMS ems) {
         //System.out.print("[*] Checking whether the box is equal to the EMS...");
         double[] box_origin = box.getOrigin();
@@ -283,6 +296,12 @@ public class Cargo extends Dimension {
     }
 
 
+    /**
+     * Helper function, sums two primitive arrays
+     * @param arr1
+     * @param arr2
+     * @return a sum of two arrays
+     */
     public double[] sumArrays(double[] arr1, double[] arr2) {
         double[] result = new double[arr1.length];
         for (int i = 0; i < result.length; i++) {
@@ -291,6 +310,12 @@ public class Cargo extends Dimension {
         return result;
     }
 
+    /**
+     * Helper function, subtracts two primitive arrays
+     * @param arr1
+     * @param arr2
+     * @return a difference of two arrays
+     */
     public double[] subtractArrays(double[] arr1, double[] arr2) {
         double[] result = new double[arr1.length];
         for (int i = 0; i < result.length; i++) {
@@ -299,6 +324,9 @@ public class Cargo extends Dimension {
         return result;
     }
 
+    /**
+     * Calculates how much distance is there to the origin of a given EMS
+     */
     public void calculateDistanceToOrigin(ArrayList<EMS> input) {
         for (EMS e : input) {
             double[] ems_origin = e.getOrigin();
