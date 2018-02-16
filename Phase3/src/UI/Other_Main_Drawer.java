@@ -168,9 +168,9 @@ public class Other_Main_Drawer extends Application {
         Label parcelA = new Label("Dimension A");
         myList.add(parcelA);
         Label amA = new Label("How many parcels of A?");
-        //myList.add(amA);
+        myList.add(amA);
         TextField amountA = new TextField();
-        //myList.add(amountA);
+        myList.add(amountA);
         Label valA = new Label("What's the value of each parcel of A?");
         myList.add(valA);
         TextField valueA = new TextField();
@@ -178,9 +178,9 @@ public class Other_Main_Drawer extends Application {
         Label parcelB = new Label("Dimension B");
         myList.add(parcelB);
         Label amB = new Label("How many parcels of B?");
-        //myList.add(amB);
+        myList.add(amB);
         TextField amountB = new TextField();
-        //myList.add(amountB);
+        myList.add(amountB);
         Label valB = new Label("What's the value of each parcel of B?");
         myList.add(valB);
         TextField valueB = new TextField();
@@ -188,9 +188,9 @@ public class Other_Main_Drawer extends Application {
         Label parcelC = new Label("Dimension C");
         myList.add(parcelC);
         Label amC = new Label("How many parcels of C?");
-        //myList.add(amC);
+        myList.add(amC);
         TextField amountC = new TextField();
-        //myList.add(amountC);
+        myList.add(amountC);
         Label valC = new Label("What's the value of each parcel of C?");
         myList.add(valC);
         TextField valueC = new TextField();
@@ -247,10 +247,18 @@ public class Other_Main_Drawer extends Application {
                     //Still need to implement the values
                 }
                 if(ga.isSelected()) {
-                    Main.startAlgo();
+                    try {
+                        Main.startAlgo(nowvalA, nowvalB, nowvalC, nowamountA, nowamountB,nowamountC);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 if(rf.isSelected()) {
-                    Main.startRandomFill();
+                    try {
+                        Main.startRandomFill();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 algoresult.setText(currentscore+"");
             }
