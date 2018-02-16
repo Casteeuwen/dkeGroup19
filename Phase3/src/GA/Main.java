@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * Tester class for the genetic & random filling algorithms
  */
 public class Main {
+    private static int max =0;
 
     public static final int ITERATIONS = 30;
     public static final int NUMBER_OF_ELITES = 20;
@@ -35,7 +36,7 @@ public class Main {
         Logic logic = new Logic();
 
         ArrayList<Cargo> cargos = new ArrayList<>();
-        int max = 0;
+        max = 0;
 
 
         // Generate boxes to be send to the algorithm
@@ -153,6 +154,7 @@ public class Main {
         }
 
         // Get the best solution from all
+        Other_Main_Drawer.setRealScore(max);
         System.out.println("Maximum value:" + max);
         for (Cargo c : cargos) {
             if (c.getTotalValue() == max) {
@@ -169,6 +171,8 @@ public class Main {
      * @param cargo
      */
     public static void displayBoxes(Cargo cargo){
+
+        Other_Main_Drawer.setRealScore(max);
         Other_Main_Drawer.clearScene();
         for (Box b : cargo.getBoxes()) {
             Color boxColor;
@@ -186,5 +190,7 @@ public class Main {
             Other_Main_Drawer.addBox(b.getWidth(), b.getHeight(), b.getLength(), b.getOrigin()[2], b.getOrigin()[1], b.getOrigin()[0], boxColor, true);
         }
     }
+
+    public static int getmaxxx(){return max;}
 
 }

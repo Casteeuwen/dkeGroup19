@@ -249,6 +249,7 @@ public class Other_Main_Drawer extends Application {
                 if(ga.isSelected()) {
                     try {
                         Main.startAlgo(nowvalA, nowvalB, nowvalC, nowamountA, nowamountB,nowamountC);
+                        setRealScore(Main.getmaxxx());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
