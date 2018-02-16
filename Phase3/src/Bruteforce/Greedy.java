@@ -17,28 +17,28 @@ public class Greedy{
 	private static double value2;
 	private static double value3;
 	
-	public static void startAlgo(double val1, double val2, double val3, int amount1, int amount2, int amount3, boolean useknap){
+	public static void startAlgo(double val1, double val2, double val3, int amount1, int amount2, int amount3){
 		value1 = val1;
 		value2 = val2;
 		value3 = val3;
 
-		if(useknap){
-			double knapsum = 0;
-			KnapsackProblem.startKnap(val1,val2,val3);
-			//amount here means maxamount
-			int[] amouteach = KnapsackProblem.getBestAmountEachBox();
-			System.out.println("Knapsack:");
-			for (int i = 0; i<3; i++){
-				System.out.println("You can use " + amouteach[i]+" parcels of type " +(i+1));
-			}
-			knapsum += amouteach[0]*val1;
-			knapsum += amouteach[1]*val2;
-			knapsum += amouteach[2]*val3;
-			System.out.println("The knapsack algorithm gave a maximum value of " + knapsum + ", calculated for an unrestricted amount of each box");
-			if (amount1 > amouteach[0]){amount1 = amouteach[0];}
-			if (amount2 > amouteach[1]){amount2 = amouteach[1];}
-			if (amount3 > amouteach[2]){amount3 = amouteach[2];}
-		}
+//		if(useknap){
+//			double knapsum = 0;
+//			KnapsackProblem.startKnap(val1,val2,val3);
+//			//amount here means maxamount
+//			int[] amouteach = KnapsackProblem.getBestAmountEachBox();
+//			System.out.println("Knapsack:");
+//			for (int i = 0; i<3; i++){
+//				System.out.println("You can use " + amouteach[i]+" parcels of type " +(i+1));
+//			}
+//			knapsum += amouteach[0]*val1;
+//			knapsum += amouteach[1]*val2;
+//			knapsum += amouteach[2]*val3;
+//			System.out.println("The knapsack algorithm gave a maximum value of " + knapsum + ", calculated for an unrestricted amount of each box");
+//			if (amount1 > amouteach[0]){amount1 = amouteach[0];}
+//			if (amount2 > amouteach[1]){amount2 = amouteach[1];}
+//			if (amount3 > amouteach[2]){amount3 = amouteach[2];}
+//		}
 
 
 

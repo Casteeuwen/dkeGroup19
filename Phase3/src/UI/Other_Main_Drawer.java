@@ -53,6 +53,12 @@ public class Other_Main_Drawer extends Application {
     private static Scene scene;
     private static SubScene scene3d;
 
+    static double nowvalA;
+    static double nowvalB;
+    static double nowvalC;
+    static double currentscore;
+
+
     //The group where you'll add all javafx3d nodes (objects) in
     private static Group myGroup = new Group(new AmbientLight(AMBIENT_COLOR), createPointLight());
 
@@ -153,17 +159,17 @@ public class Other_Main_Drawer extends Application {
         RadioButton rf = new RadioButton("Random Fill");
         rf.setToggleGroup(group);
 
-        //Setup a knapsack yes or no checkbox
-        CheckBox knapyesorno = new CheckBox("Do you want to use a knapsack algorithm?");
+//        //Setup a knapsack yes or no checkbox
+//        CheckBox knapyesorno = new CheckBox("Do you want to use a knapsack algorithm?");
 
         //Configure text elements where you select the amount of each & the values
         ArrayList<Object> myList = new ArrayList<>();
         Label parcelA = new Label("Dimension A");
         myList.add(parcelA);
         Label amA = new Label("How many parcels of A?");
-        myList.add(amA);
+        //myList.add(amA);
         TextField amountA = new TextField();
-        myList.add(amountA);
+        //myList.add(amountA);
         Label valA = new Label("What's the value of each parcel of A?");
         myList.add(valA);
         TextField valueA = new TextField();
@@ -171,9 +177,9 @@ public class Other_Main_Drawer extends Application {
         Label parcelB = new Label("Dimension B");
         myList.add(parcelB);
         Label amB = new Label("How many parcels of B?");
-        myList.add(amB);
+        //myList.add(amB);
         TextField amountB = new TextField();
-        myList.add(amountB);
+        //myList.add(amountB);
         Label valB = new Label("What's the value of each parcel of B?");
         myList.add(valB);
         TextField valueB = new TextField();
@@ -181,13 +187,23 @@ public class Other_Main_Drawer extends Application {
         Label parcelC = new Label("Dimension C");
         myList.add(parcelC);
         Label amC = new Label("How many parcels of C?");
-        myList.add(amC);
+        //myList.add(amC);
         TextField amountC = new TextField();
-        myList.add(amountC);
+        //myList.add(amountC);
         Label valC = new Label("What's the value of each parcel of C?");
         myList.add(valC);
         TextField valueC = new TextField();
         myList.add(valueC);
+
+        Label knapie = new Label("The max theoretical result is: ");
+        myList.add(knapie);
+        Label knapResult = new Label();
+        myList.add(knapResult);
+
+        Label rs = new Label("The real score is: ");
+        myList.add(rs);
+        Label algoresult = new Label();
+        myList.add(algoresult);
 
 
 
@@ -195,16 +211,15 @@ public class Other_Main_Drawer extends Application {
         Button startbutton = new Button("START");
         startbutton.setPrefWidth(TOOLBAR_WIDTH);
         startbutton.setOnAction(new EventHandler<ActionEvent>() {
-
-
             @Override
             public void handle(ActionEvent event) {
+                currentscore = 0;
                 int nowamountA = 100000;
                 int nowamountB = 100000;
                 int nowamountC = 100000;
-                double nowvalA = 0;
-                double nowvalB = 0;
-                double nowvalC = 0;
+                nowvalA = 1;
+                nowvalB = 1;
+                nowvalC = 1;
                 try{nowamountA = Integer.parseInt(amountA.getText());}catch(Exception e){}
                 try{nowamountB = Integer.parseInt(amountB.getText());}catch(Exception e){}
                 try{nowamountC = Integer.parseInt(amountC.getText());}catch(Exception e){}
@@ -212,11 +227,16 @@ public class Other_Main_Drawer extends Application {
                 try{nowvalB = Double.parseDouble(valueB.getText());}catch(Exception e){}
                 try{nowvalC = Double.parseDouble(valueC.getText());}catch(Exception e){}
 
+                KnapsackProblem.startKnap(nowvalA,nowvalB,nowvalC);
+                int[] knapsolutions = KnapsackProblem.getBestAmountEachBox();
+                double maxknapscore = knapsolutions[0]*nowvalA+knapsolutions[1]*nowvalB+knapsolutions[2]*nowvalC;
+                String solutionString = "a: "+knapsolutions[0]+ " b: "+knapsolutions[1]+" c: "+knapsolutions[2] + " --score: "+ maxknapscore;
+                knapResult.setText(solutionString);
 
                 System.out.println("START PRESSED");
                 clearScene();
                 if(GreedyButton.isSelected()){
-                    Greedy.startAlgo(nowvalA,nowvalB,nowvalC,nowamountA,nowamountB,nowamountC,knapyesorno.isSelected());
+                    Greedy.startAlgo(nowvalA,nowvalB,nowvalC,nowamountA,nowamountB,nowamountC);
                 }
                 if(rb2.isSelected()){
                     BruteGreedy.startAlgo();
@@ -228,6 +248,7 @@ public class Other_Main_Drawer extends Application {
                 if(rf.isSelected()) {
                     Main.startRandomFill();
                 }
+                algoresult.setText(currentscore+"");
             }
         });
         Button clearbutton = new Button("CLEAR");
@@ -253,7 +274,7 @@ public class Other_Main_Drawer extends Application {
 
 
         //Configure and combine the 2d and 3d scene
-        ToolBar toolBar = new ToolBar(slider,box1,box2,box3,GreedyButton,ga,rf,startbutton,clearbutton,knapyesorno);
+        ToolBar toolBar = new ToolBar(slider,box1,box2,box3,GreedyButton,ga,rf,startbutton,clearbutton);
         for (int i = 0; i< myList.size();i++){
             Node element = (Node) myList.get(i);
             toolBar.getItems().add(element);
@@ -348,6 +369,31 @@ public class Other_Main_Drawer extends Application {
      * TODO add seperate method for each of the boxes (A,B,C), that calls to this one
      */
     public static void addBox(double w, double h, double d, double x, double y, double z,Color boxc, boolean flag) {
+        double volume = w*h*d;
+        if (volume == 1*1*2){
+            boxc = BOX_GREEN;
+            currentscore+=nowvalA;
+        }if (volume == 1*1.5*2){
+            boxc = BOX_RED;
+            currentscore+=nowvalB;
+        }if (volume == 1.5*1.5*1.5){
+            boxc = BOX_BLUE;
+            currentscore+=nowvalC;
+        }else{
+            if(boxc == BOX_GREEN){
+                currentscore+=nowvalA;
+            }
+            if(boxc == BOX_RED){
+                currentscore+=nowvalB;
+            }
+            if(boxc == BOX_BLUE){
+                currentscore+=nowvalC;
+            }
+        }
+//        ITEMS[0][0] = 1 * 1 * 2;
+//        ITEMS[1][0] = 1 * 1.5 * 2;
+//        ITEMS[2][0] = 1.5 * 1.5 * 1.5;
+
         //System.out.println("called: w:"+w+" h "+h+" d "+d+" x "+x+" y "+y);
         //create outline lines of the boxes by calling this method
         double multiplier;
@@ -477,6 +523,7 @@ public class Other_Main_Drawer extends Application {
     }
 
     public static void clearScene(){
+        currentscore=0;
         myGroup.getChildren().clear();
         myGroup.getChildren().addAll(new AmbientLight(AMBIENT_COLOR), createPointLight());
         createLines(CONTAINERW, CONTAINERH, CONTAINERD, 0, 0, 0, SIZE_TRANSFORMATION);

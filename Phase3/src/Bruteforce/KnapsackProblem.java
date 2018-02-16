@@ -45,7 +45,7 @@ public class KnapsackProblem {
   */
 
     public static void startKnap(double val1,double val2,double val3) {
-
+        System.out.println("knap started!!");
         //Scanner in = new Scanner(System.in);
 
 
